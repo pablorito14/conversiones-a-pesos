@@ -1,0 +1,80 @@
+<div class="home">
+
+  <div class="container">
+    <div class="my-3">
+      <div class="btn-group shadow w-100">
+        <a class="btn btn-primary" [class]="{'active': euros}" (click)="cambiarConversion('euro')">€ {{ cotizaciones.euro.valor }}</a>
+        <a class="btn btn-primary" [class]="{'active': francos}" (click)="cambiarConversion('franco')">Fr. {{ cotizaciones.franco.valor }}</a>
+      </div>
+    </div>
+    <div class="card my-3 shadow">
+      <div class="card-body">
+        <h3 class="text-center">Conversion de {{ cambio }} a pesos</h3>
+        <div class="my-3">
+          <input type="number" (input)="onDebouncer($event)" class="form-control">
+          <p class="text-muted fs-6 text-center">
+            <small>Ultima cotización: {{ ultimaCotizacion }}</small>
+          </p>
+
+        </div>
+        <div class="row">
+          <div class="col-5">
+            <div class="fw-bold fs-5">
+              <span class="text-muted">{{ 'franco' | monedaPipe }}</span> 
+              {{ '111' }}
+            </div>
+          </div>
+          <div class="col-2 text-center my-auto">
+            <i class="fa-duotone fa-angles-right fa-lg"></i>
+          </div>
+          <div class="col-5 text-end">
+            <div class="fw-bold fs-5">
+              <span class="text-muted">$ </span> 
+              {{ '111' }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card my-3 shadow" *ngIf="conversiones.length > 0">
+      <div class="card-body">
+        <h3 class="text-center">Historial</h3>
+
+        <div class="row" *ngFor="let c of conversiones">
+          <div class="col-5">
+            <div class="fw-bold fs-5">
+              <span class="text-muted">{{ c.moneda | monedaPipe }}</span> 
+              {{ c.valor }}
+            </div>
+          </div>
+          <div class="col-2 text-center my-auto">
+            <i class="fa-duotone fa-angles-right fa-lg"></i>
+          </div>
+          <div class="col-5 text-end">
+            <div class="fw-bold fs-5">
+              <span class="text-muted">$ </span> 
+              {{ c.pesos }}
+            </div>
+          </div>
+        </div>
+
+
+        <!-- <div class="d-flex justify-content-between align-items-center"
+              *ngFor="let c of conversiones">
+          <div class="monto fw-bold fs-5">
+            <span class="text-muted">{{ c.moneda | monedaPipe }}</span> 
+            {{ c.valor }}
+          </div>
+          <div class="icon">
+            <i class="fa-duotone fa-angles-right fa-lg"></i>
+          </div>
+          <div class="conversion fw-bold fs-5">
+            <span class="text-muted">$ </span> 
+            {{ c.pesos }}
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+</div>
