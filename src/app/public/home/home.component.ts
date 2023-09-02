@@ -103,8 +103,10 @@ export class HomeComponent implements OnInit {
     this.debouncer.next(valor);
   }
 
+  testValue:number = 0;
   calcularValor(valor:number){
     console.log(valor)
+    this.testValue = valor;
   }
 
 }
