@@ -17,7 +17,7 @@
           <h3 class="text-center">Conversion de {{ cambio }} a pesos</h3>
           
           <div class="input-group conversion-input">
-            <input #conversion type="tel" (input)="onDebouncer($event)" [(ngModel)]="valor" class="form-control" aria-describedby="conversion">
+            <input #conversion type="number" inputmode="decimal" class="form-control" aria-describedby="conversion" (input)="onDebouncer($event)" [(ngModel)]="valor">
             <button class="btn btn-outline-secondary" (click)="limpiarInput()" type="button" id="conversion"><i class="fa-solid fa-xmark"></i></button>
           </div>
           <p class="text-muted fs-6 text-center">

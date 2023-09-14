@@ -120,6 +120,9 @@ export class HomeComponent implements OnInit {
   }
 
   onDebouncer(event?:any){
+
+    
+
     const valor = +parseFloat(event.target.value).toFixed(2);
     this.debouncer.next(valor);
   }
