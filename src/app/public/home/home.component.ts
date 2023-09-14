@@ -121,28 +121,36 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  formatearDecimal(event?:any){
+    console.log('aaa')
+    console.log(event.target.value);
+
+    console.log('hola','hola'.replace('a','3'))
+
+    // this.valor = event.target.value.replace(',','0')
+  }
+
   onDebouncer(event?:any){
 
+    console.log({event: event.target.value,value: this.valor});
     // console.log(this.valor.toFixed(2))
     // console.log(event.target.value.replace(',','.'));
     // this.valor = +parseFloat(event.target.value.replace(',','.')).toFixed(2)
 
     // // const valor = +parseFloat(this.valor).toFixed(2);
-    this.debouncer.next(this.valor);
+    this.debouncer.next(+this.valor);
   }
 
-  valor!:number;
+  valor:string = '';
   limpiarInput(){
-    this.valor = undefined!;
+    // this.valor = undefined!;
+    this.valor = '';
     this.input.nativeElement.focus();
   }
    
 
   // testValue:number = 0;
   calcularValor(valor:number){
-    console.log(valor)
-    // this.testValue = valor;
-
     let pesos = 0;
     if(this.cambio === 'euros'){
       pesos = valor * this.cotizaciones.euro.valor;
@@ -156,8 +164,13 @@ export class HomeComponent implements OnInit {
       pesos: pesos
     }
 
-    console.log(this.conversionActual);
-    this.conversiones.push(this.conversionActual)
+    const existe = this.conversiones.findIndex(c => c.moneda == this.cambio && c.valor == valor);
+    
+    if(existe != -1){
+      this.conversiones.splice(existe,1);
+    }
+
+    this.conversiones.unshift(this.conversionActual)
   }
 
   limpiarHistorial(){
