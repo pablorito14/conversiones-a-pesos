@@ -45,7 +45,7 @@
       </div>
       <div class="card my-3 shadow" *ngIf="conversiones.length > 0">
         <div class="card-body">
-          <h3 class="text-center">Historial</h3>
+          <h3 class="text-center">Historial <i class="fa-duotone fa-eraser text-primary" (click)="limpiarHistorial()"></i></h3>
 
           <div class="row" *ngFor="let c of conversiones">
             <div class="col-5">

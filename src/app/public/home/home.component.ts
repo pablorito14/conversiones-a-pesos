@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as moment from 'moment';
-import { Subject } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { Subject, timer } from 'rxjs';
+import { debounceTime, delay } from 'rxjs/operators';
 
 interface Cotizacion {
   euro:{
@@ -90,7 +90,7 @@ export class HomeComponent implements OnInit {
     this.buscarCotizacion();
     this.cambiarConversion(cambio);
     
-    // this.randomConversiones();
+    this.randomConversiones();
   }
 
   buscarCotizacion(){
@@ -111,10 +111,10 @@ export class HomeComponent implements OnInit {
   }
 
   randomConversiones(){
-    for (let index = 0; index < 10; index++) {
+    for (let index = 0; index < 20; index++) {
       
       this.conversiones.push({
-        moneda:(Math.floor(Math.random() * 2) == 0) ? 'euro' : 'franco',
+        moneda:(Math.floor(Math.random() * 2) == 0) ? 'euros' : 'francos',
         valor: Math.floor(Math.random() * 10000),
         pesos: Math.floor(Math.random() * 10000)
       })      
@@ -124,8 +124,8 @@ export class HomeComponent implements OnInit {
   onDebouncer(event?:any){
 
 
-    console.log(event.target.value);
-    this.valor = +parseFloat(event.target.value).toFixed(2)
+    console.log(event.target.value.replace(',','.'));
+    this.valor = +parseFloat(event.target.value.replace(',','.')).toFixed(2)
     
 
     // const valor = +parseFloat(this.valor).toFixed(2);
@@ -159,6 +159,19 @@ export class HomeComponent implements OnInit {
 
     console.log(this.conversionActual);
     this.conversiones.push(this.conversionActual)
+  }
+
+  limpiarHistorial(){
+    console.log(this.conversiones.length)
+
+    const source = timer(100,50)
+    const limpiar = source.subscribe(val => {
+      this.conversiones.pop();
+
+      if(this.conversiones.length == 0){
+        limpiar.unsubscribe();
+      }
+    })
   }
 
   
