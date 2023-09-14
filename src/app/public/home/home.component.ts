@@ -29,6 +29,8 @@ export class HomeComponent implements OnInit {
 
   loading:boolean = true;
 
+  @ViewChild('conversion') input!: ElementRef;
+
   euros:boolean = true;
   francos:boolean = false;
   cambio:string = 'euros'
@@ -95,7 +97,7 @@ export class HomeComponent implements OnInit {
     this.cotizaciones = {
       euro: {
         fecha: '2023-09-01',
-        valor: 650
+        valor: 1650
       },
       franco: {
         fecha: '2023-08-31',
@@ -121,10 +123,13 @@ export class HomeComponent implements OnInit {
 
   onDebouncer(event?:any){
 
+
+    console.log(event.target.value);
+    this.valor = +parseFloat(event.target.value).toFixed(2)
     
 
-    const valor = +parseFloat(event.target.value).toFixed(2);
-    this.debouncer.next(valor);
+    // const valor = +parseFloat(this.valor).toFixed(2);
+    this.debouncer.next(this.valor);
   }
 
   valor!:number;
@@ -156,6 +161,6 @@ export class HomeComponent implements OnInit {
     this.conversiones.push(this.conversionActual)
   }
 
-  @ViewChild('conversion') input!: ElementRef;
+  
 
 }
