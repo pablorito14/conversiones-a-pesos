@@ -90,7 +90,7 @@ export class HomeComponent implements OnInit {
     this.buscarCotizacion();
     this.cambiarConversion(cambio);
     
-    this.randomConversiones();
+    // this.randomConversiones();
   }
 
   buscarCotizacion(){
@@ -123,12 +123,11 @@ export class HomeComponent implements OnInit {
 
   onDebouncer(event?:any){
 
+    // console.log(this.valor.toFixed(2))
+    // console.log(event.target.value.replace(',','.'));
+    // this.valor = +parseFloat(event.target.value.replace(',','.')).toFixed(2)
 
-    console.log(event.target.value.replace(',','.'));
-    this.valor = +parseFloat(event.target.value.replace(',','.')).toFixed(2)
-    
-
-    // const valor = +parseFloat(this.valor).toFixed(2);
+    // // const valor = +parseFloat(this.valor).toFixed(2);
     this.debouncer.next(this.valor);
   }
 

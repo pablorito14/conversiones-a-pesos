@@ -1,7 +1,14 @@
 <div class="home">
 
   <div class="cargando" *ngIf="loading; else noLoading">
-    cargando ...
+    <div>
+      <h3>
+        Cargando
+        <i class="fa-solid fa-period fa-bounce dot"></i> 
+        <i class="fa-solid fa-period fa-bounce dot"></i> 
+        <i class="fa-solid fa-period fa-bounce dot"></i>
+      </h3>
+    </div>
   </div>
 
   <ng-template #noLoading>
@@ -23,7 +30,7 @@
           <p class="text-muted fs-6 text-center">
             <small>Ultima cotización: {{ ultimaCotizacion }}</small>
           </p>
-          
+          {{ valor }}
           <div class="row">
             <div class="col-5">
               <div class="fw-bold fs-5">
