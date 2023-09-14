@@ -27,7 +27,18 @@
   border-right: none;
 }
 
+.conversion-input input:focus{
+  border-color: #dee2e6;
+  box-shadow: none;
+}
+
 .conversion-input button{
   border-left: none;
   border-color: #dee2e6;
+}
+
+.conversion-input button:active,
+.conversion-input button:hover{
+  background-color: white !important;
+  color: #6c757d;
 }
