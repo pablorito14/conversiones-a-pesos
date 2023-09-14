@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as moment from 'moment';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
@@ -26,6 +26,9 @@ interface Conversion{
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+
+  loading:boolean = true;
+
   euros:boolean = true;
   francos:boolean = false;
   cambio:string = 'euros'
@@ -33,30 +36,43 @@ export class HomeComponent implements OnInit {
   cotizaciones!: Cotizacion;
   ultimaCotizacion:string = '';
 
-  formatoFecha:string = 'DD [de] MMMM';
+  formatoFecha:string = 'D [de] MMMM';
 
   conversiones:Conversion[] = [];
+  conversionActual!:Conversion;
   
   cambiarConversion(cambio:string){
-    if(cambio == 'euro') {
+    if(cambio == 'euros') {
       this.euros = true; 
       this.francos = !this.euros
-      this.cambio = 'euros';
+      this.cambio = cambio;
       this.ultimaCotizacion = moment(this.cotizaciones.euro.fecha).format(this.formatoFecha);
-      localStorage.setItem('tipoCambio','euro');
-    } else if(cambio = 'franco') {
+      localStorage.setItem('tipoCambio',cambio);
+
+      this.conversionActual = {
+        moneda: cambio,
+        valor: 1,
+        pesos: this.cotizaciones.euro.valor
+      }
+    } else if(cambio = 'francos') {
       this.francos = true;
       this.euros = !this.francos;
-      this.cambio = 'francos';
+      this.cambio = cambio;
       this.ultimaCotizacion = moment(this.cotizaciones.franco.fecha).format(this.formatoFecha);
-      localStorage.setItem('tipoCambio','franco');
+      localStorage.setItem('tipoCambio',cambio);
+
+      this.conversionActual = {
+        moneda: cambio,
+        valor: 1,
+        pesos: this.cotizaciones.franco.valor
+      }
     }
   }
 
   debouncer:Subject<number> = new Subject();
 
   ngOnInit(): void {
-    const cambio = localStorage.getItem('tipoCambio') || 'euro';
+    const cambio = localStorage.getItem('tipoCambio') || 'euros';
     
     this.debouncer
         .pipe(debounceTime(1000))
@@ -71,7 +87,8 @@ export class HomeComponent implements OnInit {
 
     this.buscarCotizacion();
     this.cambiarConversion(cambio);
-    this.randomConversiones();
+    
+    // this.randomConversiones();
   }
 
   buscarCotizacion(){
@@ -85,6 +102,10 @@ export class HomeComponent implements OnInit {
         valor: 700
       }
     }
+
+    setTimeout(() => {
+      this.loading = false;
+    }, 3000);
   }
 
   randomConversiones(){
@@ -99,14 +120,39 @@ export class HomeComponent implements OnInit {
   }
 
   onDebouncer(event?:any){
-    const valor = parseInt(event.target.value);
+    const valor = +parseFloat(event.target.value).toFixed(2);
     this.debouncer.next(valor);
   }
 
-  testValue:number = 0;
+  valor!:number;
+  limpiarInput(){
+    this.valor = undefined!;
+    this.input.nativeElement.focus();
+  }
+   
+
+  // testValue:number = 0;
   calcularValor(valor:number){
     console.log(valor)
-    this.testValue = valor;
+    // this.testValue = valor;
+
+    let pesos = 0;
+    if(this.cambio === 'euros'){
+      pesos = valor * this.cotizaciones.euro.valor;
+    } else if(this.cambio === 'francos' ){
+      pesos = valor * this.cotizaciones.franco.valor;
+    }
+
+    this.conversionActual = {
+      moneda: this.cambio,
+      valor: valor,
+      pesos: pesos
+    }
+
+    console.log(this.conversionActual);
+    this.conversiones.push(this.conversionActual)
   }
+
+  @ViewChild('conversion') input!: ElementRef;
 
 }

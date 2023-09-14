@@ -22,3 +22,12 @@
 .card{
   opacity: .85;
 }
+
+ .conversion-input input{
+  border-right: none;
+}
+
+.conversion-input button{
+  border-left: none;
+  border-color: #dee2e6;
+}

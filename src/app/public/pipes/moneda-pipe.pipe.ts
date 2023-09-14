@@ -7,9 +7,9 @@ export class MonedaPipePipe implements PipeTransform {
 
   transform(moneda:string): string {
 
-    if(moneda == 'euro'){
+    if(moneda == 'euros'){
       return '€';
-    } else if(moneda == 'franco'){
+    } else if(moneda == 'francos'){
       return 'Fr.'
     }
 
