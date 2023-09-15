@@ -18,6 +18,7 @@ import { MonedaPipePipe } from './public/pipes/moneda-pipe.pipe';
 import { FormsModule } from '@angular/forms';
 
 import localeEs from '@angular/common/locales/es-AR';
+import { HttpClientModule } from '@angular/common/http';
 registerLocaleData(localeEs)
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ registerLocaleData(localeEs)
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    HttpClientModule,
     FormsModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),

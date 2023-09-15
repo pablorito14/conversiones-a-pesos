@@ -24,9 +24,11 @@
           <h3 class="text-center">Conversion de {{ cambio }} a pesos</h3>
           
           <div class="input-group conversion-input">
-            <input #conversion type="number" class="form-control" aria-describedby="conversion" 
+            <input #conversion type="text" class="form-control" aria-describedby="conversion" 
                   autofocus="true" 
-                  (keyup)="formatearDecimal($event)" 
+                  
+                  (keydown)="keyDown($event)"
+                  pattern="\d*" inputmode="decimal"
                   (input)="onDebouncer($event)" 
                   [(ngModel)]="valor">
             <button class="btn btn-outline-secondary" (click)="limpiarInput()" type="button" id="conversion"><i class="fa-solid fa-xmark"></i></button>
@@ -34,7 +36,7 @@
           <p class="text-muted fs-6 text-center">
             <small>Ultima cotización: {{ ultimaCotizacion }}</small>
           </p>
-          {{ valor }}
+          <!-- {{ valor }} -  {{ keycode }} -->
           <div class="row">
             <div class="col-5">
               <div class="fw-bold fs-5">
@@ -48,7 +50,7 @@
             <div class="col-5 text-end">
               <div class="fw-bold fs-5">
                 <span class="text-muted">$ </span> 
-                {{ conversionActual.pesos | currency:' ':'symbol':'3.0-0' }}
+                {{ conversionActual.pesos | currency:' ':'symbol':'3.0-2' }}
               </div>
             </div>
           </div>
@@ -71,7 +73,7 @@
             <div class="col-5 text-end">
               <div class="fw-bold fs-5">
                 <span class="text-muted">$ </span> 
-                {{ c.pesos | currency:' ':'symbol':'3.0-0' }}
+                {{ c.pesos | currency:' ':'symbol':'3.0-2' }}
               </div>
             </div>
           </div>

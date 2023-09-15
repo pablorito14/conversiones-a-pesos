@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as moment from 'moment';
 import { Subject, timer } from 'rxjs';
 import { debounceTime, delay } from 'rxjs/operators';
+import { CotizacionesService } from '../services/cotizaciones.service';
 
 interface Cotizacion {
   euro:{
@@ -33,6 +34,9 @@ export class HomeComponent implements OnInit {
 
   euros:boolean = true;
   francos:boolean = false;
+  
+  francosToEuros:number = 1.05;
+  
   cambio:string = 'euros'
   
   cotizaciones!: Cotizacion;
@@ -43,6 +47,24 @@ export class HomeComponent implements OnInit {
   conversiones:Conversion[] = [];
   conversionActual!:Conversion;
   
+  debouncer:Subject<number> = new Subject();
+
+  constructor(private _cotizaciones:CotizacionesService){}
+
+  ngOnInit(): void {
+    
+    this.debouncer
+        .pipe(debounceTime(1000))
+        .subscribe(valor => {
+
+          if(valor > 0){
+            this.calcularValor(valor);
+          }
+        })
+
+    this.buscarCotizacion();
+  }
+
   cambiarConversion(cambio:string){
     if(cambio == 'euros') {
       this.euros = true; 
@@ -71,73 +93,65 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  debouncer:Subject<number> = new Subject();
-
-  ngOnInit(): void {
-    const cambio = localStorage.getItem('tipoCambio') || 'euros';
-    
-    this.debouncer
-        .pipe(debounceTime(1000))
-        .subscribe(valor => {
-
-          console.log(typeof valor);
-          if(valor > 0){
-            this.calcularValor(valor);
-          }
-        })
-
-
-    this.buscarCotizacion();
-    this.cambiarConversion(cambio);
-    
-    // this.randomConversiones();
-  }
-
   buscarCotizacion(){
-    this.cotizaciones = {
-      euro: {
-        fecha: '2023-09-01',
-        valor: 1650
-      },
-      franco: {
-        fecha: '2023-08-31',
-        valor: 700
+
+    this._cotizaciones.getCotizacion().subscribe(
+      (cot:any) => {
+        this.cotizaciones = {
+          euro: {
+            fecha: cot.fecha,
+            valor: cot.valor
+          },
+          franco: {
+            fecha: cot.fecha,
+            valor: +(cot.valor * this.francosToEuros).toFixed(2)
+          }
+        }
+        const cambio = localStorage.getItem('tipoCambio') || 'euros';
+        this.cambiarConversion(cambio);
+        this.loading = false;
       }
+    );
+
+    // this.cotizaciones = {
+    //   euro: {
+    //     fecha: '2023-09-01',
+    //     valor: 1650
+    //   },
+    //   franco: {
+    //     fecha: '2023-08-31',
+    //     valor: 700
+    //   }
+    // }
+
+  }
+
+  keyDown(event?:any){
+    /**
+     * keyCode 48 y que no sea el primero para eliminar el 0 inicial
+     * keyCode entre 48 y 57: numeros del 0 al 9
+     * keyCode 188: coma y se verifica que no este en el input
+     * keycode 8 es borrar, entre 37 y 40 las flechas de direccion
+     * Todo el resto se restringe la entrada
+     */
+
+    if(event.keyCode == 48 && event.target.value != ''){
+      console.log('aaa',event.target.value);
+      return true;
+    } else if(event.keyCode > 48 && event.keyCode <= 57){
+      return true;
+    } else if(event.keyCode == 188 && !event.target.value.includes('.')){
+      return true;
+    } else if(event.keyCode == 8 || (event.keyCode >= 37 && event.keyCode <= 40)){
+      return true;
     }
 
-    setTimeout(() => {
-      this.loading = false;
-    }, 3000);
+    return false;
   }
-
-  randomConversiones(){
-    for (let index = 0; index < 20; index++) {
-      
-      this.conversiones.push({
-        moneda:(Math.floor(Math.random() * 2) == 0) ? 'euros' : 'francos',
-        valor: Math.floor(Math.random() * 10000),
-        pesos: Math.floor(Math.random() * 10000)
-      })      
-    }
-  }
-
-  formatearDecimal(event?:any){
-    console.log('aaa')
-    console.log(event.target.value);
-
-    console.log('hola','hola'.replace('a','3'))
-
-    // this.valor = event.target.value.replace(',','0')
-  }
-
+  
   onDebouncer(event?:any){
+    this.valor = event.target.value.replace(',','.')
 
-    console.log({event: event.target.value,value: this.valor});
-    // console.log(this.valor.toFixed(2))
-    // console.log(event.target.value.replace(',','.'));
-    // this.valor = +parseFloat(event.target.value.replace(',','.')).toFixed(2)
-
-    // // const valor = +parseFloat(this.valor).toFixed(2);
     this.debouncer.next(+this.valor);
   }
 
@@ -174,7 +188,6 @@ export class HomeComponent implements OnInit {
   }
 
   limpiarHistorial(){
-    console.log(this.conversiones.length)
 
     const source = timer(100,50)
     const limpiar = source.subscribe(val => {
