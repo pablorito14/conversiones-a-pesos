@@ -8,10 +8,17 @@ interface Cotizacion {
   euro:{
     fecha:string;
     valor:number;
+    valorConImp:number;
   };
   franco:{
     fecha:string;
     valor: number;
+    valorConImp:number;
+  },
+  dolar: {
+    fecha:string;
+    valor:number;
+    valorConImp:number;
   }
 }
 
@@ -21,6 +28,12 @@ interface Conversion{
   pesos:number;
 }
 
+interface Impuestos{
+  rg4815:number;
+  pais:number;
+  catar:number;
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -28,16 +41,35 @@ interface Conversion{
 })
 export class HomeComponent implements OnInit {
 
+  ciudades:string[] = ['zurich','roma','milan']
+  ciudadesClass:string = '';
+
+  imp:Impuestos = {
+    rg4815: 0.45,
+    pais: 0.30,
+    catar: 0.05
+  }
+
   loading:boolean = true;
 
   @ViewChild('conversion') input!: ElementRef;
 
-  euros:boolean = true;
-  francos:boolean = false;
+  // euros:boolean = true;
+  // francos:boolean = false;
+
+  activeCurrency:string = 'euros';
   
   francosToEuros:number = 1.05;
+  dolaresToEuros:number = 0;
   
-  cambio:string = 'euros'
+  limiteImpCatar:any = {
+    dolar: 0,
+    euro: 0,
+    franco:0,
+
+  }
+  
+  // cambio:string = 'euros'
   
   cotizaciones!: Cotizacion;
   ultimaCotizacion:string = '';
@@ -53,6 +85,9 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     
+    const randomCity = Math.floor(Math.random() * this.ciudades.length)
+    console.log(randomCity)
+    this.ciudadesClass = this.ciudades[randomCity];
     this.debouncer
         .pipe(debounceTime(1000))
         .subscribe(valor => {
@@ -66,50 +101,93 @@ export class HomeComponent implements OnInit {
   }
 
   cambiarConversion(cambio:string){
+    this.activeCurrency = cambio;
+    localStorage.setItem('tipoCambio',cambio);
     if(cambio == 'euros') {
-      this.euros = true; 
-      this.francos = !this.euros
-      this.cambio = cambio;
       this.ultimaCotizacion = moment(this.cotizaciones.euro.fecha).format(this.formatoFecha);
-      localStorage.setItem('tipoCambio',cambio);
 
       this.conversionActual = {
         moneda: cambio,
         valor: 1,
         pesos: this.cotizaciones.euro.valor
       }
-    } else if(cambio = 'francos') {
-      this.francos = true;
-      this.euros = !this.francos;
-      this.cambio = cambio;
+    } else if(cambio == 'francos') {
       this.ultimaCotizacion = moment(this.cotizaciones.franco.fecha).format(this.formatoFecha);
-      localStorage.setItem('tipoCambio',cambio);
 
       this.conversionActual = {
         moneda: cambio,
         valor: 1,
         pesos: this.cotizaciones.franco.valor
       }
+    } else if(cambio == 'dolares'){
+      this.ultimaCotizacion = moment(this.cotizaciones.dolar.fecha).format(this.formatoFecha);
+
+      this.conversionActual = {
+        moneda: cambio,
+        valor: 1,
+        pesos: this.cotizaciones.dolar.valor
+      }
     }
+
+    console.log(this.conversionActual)
   }
 
-  buscarCotizacion(){
+  reloading:boolean = false;
+  buscarCotizacion(reload:boolean = false){
+    this.reloading = reload;
+    this._cotizaciones.getCotizacion().subscribe((cot:any) => {
+        
+        // const valorDolar = +(cot.dolar.valor * (this.imp.rg4815 +1) * (this.imp.pais + 1)).toFixed(2);
+        // const valorEuro = +(cot.euro.valor * (this.imp.rg4815 + 1) * (this.imp.pais + 1)).toFixed(2);
+        const valorDolar = +(cot.dolar.valor * (this.imp.rg4815 + this.imp.pais + 1)).toFixed(2);
+        const valorEuro = +(cot.euro.valor * (this.imp.rg4815 + this.imp.pais + 1)).toFixed(2);
+        const valorFranco = +(cot.euro.valor * this.francosToEuros).toFixed(2)
+        // const valorFrancoConImp = +(alorEuro * this.francosToEuros).toFixed(2);
+        const valorFrancoConImp = +(valorFranco * (this.imp.rg4815 + this.imp.pais + 1)).toFixed(2);
 
-    this._cotizaciones.getCotizacion().subscribe(
-      (cot:any) => {
         this.cotizaciones = {
           euro: {
-            fecha: cot.fecha,
-            valor: cot.valor
+            fecha: cot.euro.fecha,
+            valor: cot.euro.valor,
+            valorConImp: valorEuro
           },
           franco: {
-            fecha: cot.fecha,
-            valor: +(cot.valor * this.francosToEuros).toFixed(2)
+            fecha: cot.euro.fecha,
+            valor: valorFranco,
+            valorConImp: valorFrancoConImp
+          },
+          dolar:{
+            fecha: cot.dolar.fecha,
+            valor: cot.dolar.valor,
+            valorConImp:valorDolar
           }
         }
+        console.log(this.cotizaciones)
+
+        this.dolaresToEuros = +(this.cotizaciones.euro.valor / this.cotizaciones.dolar.valor).toFixed(2);
+
+        console.log(this.francosToEuros,this.dolaresToEuros);
+
+        const limiteEuros = +(300 * (2 - this.dolaresToEuros)).toFixed(2);
+        const limiteFrancos = +(limiteEuros * (2 - this.francosToEuros)).toFixed(2);
+
+        console.log({limiteEuros,limiteFrancos})
+
+        this.limiteImpCatar = {
+          dolares: 300,
+          euros: +(300 * (2 - this.dolaresToEuros)).toFixed(2),
+          francos: +(300 * +(3 - this.dolaresToEuros - this.francosToEuros).toFixed(2)).toFixed(2)
+        }
+
+        console.log(this.limiteImpCatar)
+
+        localStorage.setItem('cotizaciones',JSON.stringify(this.cotizaciones))
+
         const cambio = localStorage.getItem('tipoCambio') || 'euros';
         this.cambiarConversion(cambio);
         this.loading = false;
+        this.reloading = false;
+        
       }
     );
 
@@ -136,7 +214,6 @@ export class HomeComponent implements OnInit {
      */
 
     if(event.keyCode == 48 && event.target.value != ''){
-      console.log('aaa',event.target.value);
       return true;
     } else if(event.keyCode > 48 && event.keyCode <= 57){
       return true;
@@ -166,19 +243,21 @@ export class HomeComponent implements OnInit {
   // testValue:number = 0;
   calcularValor(valor:number){
     let pesos = 0;
-    if(this.cambio === 'euros'){
+    if(this.activeCurrency === 'euros'){
       pesos = valor * this.cotizaciones.euro.valor;
-    } else if(this.cambio === 'francos' ){
+    } else if(this.activeCurrency === 'francos' ){
       pesos = valor * this.cotizaciones.franco.valor;
+    } else if(this.activeCurrency === 'dolares'){
+      pesos = valor * this.cotizaciones.dolar.valor;
     }
 
     this.conversionActual = {
-      moneda: this.cambio,
+      moneda: this.activeCurrency,
       valor: valor,
-      pesos: pesos
+      pesos: (valor >= 300 ) ? +(pesos * (this.imp.catar + 1)).toFixed(2) : pesos
     }
 
-    const existe = this.conversiones.findIndex(c => c.moneda == this.cambio && c.valor == valor);
+    const existe = this.conversiones.findIndex(c => c.moneda == this.activeCurrency && c.valor == valor);
     
     if(existe != -1){
       this.conversiones.splice(existe,1);

@@ -7,10 +7,49 @@
 	content: "";
 	width: 100%;
 	height: 100vh;
-	background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 75%, #000000 100%), url("../../../assets/img/home-background.jpg");
-  /* background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 75%, #000000 100%); */
-  /* background-color: #d5e8fb; */
+	/* background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 75%, #000000 100%), url("../../../assets/img/home-background.jpg");
 	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: -1;
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	background-size: cover; */
+}
+
+.zurich:before{
+  
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, 
+                            rgba(0, 0, 0, 0.7) 75%, #000000 100%), 
+              url("../../../assets/img/zurich.jpg");
+  position: fixed;
+	left: 0;
+	top: 0;
+	z-index: -1;
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.roma:before{
+  
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, 
+                            rgba(0, 0, 0, 0.7) 75%, #000000 100%), 
+              url("../../../assets/img/roma.jpeg");
+  position: fixed;
+	left: 0;
+	top: 0;
+	z-index: -1;
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.milan:before{
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, 
+                            rgba(0, 0, 0, 0.7) 75%, #000000 100%), 
+              url("../../../assets/img/milan.jpeg");
+  position: fixed;
 	left: 0;
 	top: 0;
 	z-index: -1;

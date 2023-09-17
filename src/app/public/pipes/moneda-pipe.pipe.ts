@@ -10,7 +10,9 @@ export class MonedaPipePipe implements PipeTransform {
     if(moneda == 'euros'){
       return '€';
     } else if(moneda == 'francos'){
-      return 'Fr.'
+      return 'Fr.';
+    } else if(moneda == 'dolares'){
+      return 'U$D';
     }
 
     return '';

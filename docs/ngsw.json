@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1694790532818,
+  "timestamp": 1694911159464,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -13,7 +13,7 @@
       "urls": [
         "/favicon.ico",
         "/index.html",
-        "/main.e49dddf5fdb70ef1.js",
+        "/main.cc92b141b411d4cb.js",
         "/manifest.webmanifest",
         "/polyfills.e0bb9c46f55ced86.js",
         "/runtime.bb47e008b8fed845.js",
@@ -159,8 +159,12 @@
         "/assets/icons/icon-512x512.png",
         "/assets/icons/icon-72x72.png",
         "/assets/icons/icon-96x96.png",
-        "/assets/img/home-background.jpg",
-        "/home-background.0f78bff1aae37001.jpg"
+        "/assets/img/milan.jpeg",
+        "/assets/img/roma.jpeg",
+        "/assets/img/zurich.jpg",
+        "/milan.28daaeeee2f9d369.jpeg",
+        "/roma.d10b9952990c23c0.jpeg",
+        "/zurich.0f78bff1aae37001.jpg"
       ],
       "patterns": []
     }
@@ -296,16 +300,20 @@
     "/assets/icons/icon-512x512.png": "559d9c4318b45a1f2b10596bbb4c960fe521dbcc",
     "/assets/icons/icon-72x72.png": "279825a1ac4377032ae996a1832c641e33ccf1b6",
     "/assets/icons/icon-96x96.png": "592885efcbfee27e5e20be4fa3043589390d2740",
-    "/assets/img/home-background.jpg": "9bb9a40be9363297072c4f5bf09076f1ed76b4bc",
+    "/assets/img/milan.jpeg": "a44e51343511c3229c58f5cbb4234b72ea6f4c49",
+    "/assets/img/roma.jpeg": "1dd173b978a4e94de3a0cabdebb9fb4bf56554d1",
+    "/assets/img/zurich.jpg": "9bb9a40be9363297072c4f5bf09076f1ed76b4bc",
     "/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
-    "/home-background.0f78bff1aae37001.jpg": "9bb9a40be9363297072c4f5bf09076f1ed76b4bc",
-    "/index.html": "5c26bab37a61032c690f15a8e43cacaac99861d0",
-    "/main.e49dddf5fdb70ef1.js": "5f99a076b1fc290e0156121fb9736bd9df195ac8",
+    "/index.html": "e25ecc5cbe26e20d5cc29aa15b7899e759122f9e",
+    "/main.cc92b141b411d4cb.js": "7c875be33f08b49afe13b1927df2af28b6e96e92",
     "/manifest.webmanifest": "6b7fab00633f18cf200b44b0f379df0d9af492b5",
+    "/milan.28daaeeee2f9d369.jpeg": "a44e51343511c3229c58f5cbb4234b72ea6f4c49",
     "/polyfills.e0bb9c46f55ced86.js": "a4d4e96dfed468ca5cf36006e1b41c4175fabfd2",
+    "/roma.d10b9952990c23c0.jpeg": "1dd173b978a4e94de3a0cabdebb9fb4bf56554d1",
     "/runtime.bb47e008b8fed845.js": "cbd850ed02b2256c74a4476d51b569838baad42b",
     "/scripts.c835cf0c315fc5c5.js": "817bc522f82c76de4ce40ee4cf76fc3b61d9f03c",
-    "/styles.8050ed99caa97375.css": "26257e491f79ea60b4bceb561490a02c70408d96"
+    "/styles.8050ed99caa97375.css": "26257e491f79ea60b4bceb561490a02c70408d96",
+    "/zurich.0f78bff1aae37001.jpg": "9bb9a40be9363297072c4f5bf09076f1ed76b4bc"
   },
   "navigationUrls": [
     {
