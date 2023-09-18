@@ -12,9 +12,7 @@
           "/manifest.webmanifest",
           "/*.css",
           "/*.js",
-          "/*.jpg",
-          "/assets/img/**",
-          "/assets/font-awesome-v6.2.0/**"
+          "/*.jpg"
         ]
       }
     },
