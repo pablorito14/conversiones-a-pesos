@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1695053752205,
+  "timestamp": 1695054070704,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -99,7 +99,7 @@
     "/assets/splashscreens/iphonexsmax_splash.png": "cd03c410e970995f0ebf6e741de046bee51c31c1",
     "/background.bcd11935e0ea7f5d.jpg": "73d8e7ca0dd89e8e4f1c03a38ed4b62dfaad7de1",
     "/favicon.ico": "bd71fbe2a43df66022942ab3a917b5e98403e01e",
-    "/index.html": "47234cddf6784c43c6ebc7199d4a57ff8d13cd59",
+    "/index.html": "adc8969277910ff6aa9b4201dde235a8a6504c55",
     "/main.16d9a92d06027acb.js": "9483cd8768b57b93fabf92a7ff33bfa4ce02f3b0",
     "/manifest.webmanifest": "874ceefea69bc5d4901edd4786e7f3b7d38ab613",
     "/polyfills.e0bb9c46f55ced86.js": "a4d4e96dfed468ca5cf36006e1b41c4175fabfd2",
