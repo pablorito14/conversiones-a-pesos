@@ -54,6 +54,8 @@ export class AppComponent implements OnInit {
     }
 
     this.update.versionUpdates.subscribe((event:any) => {
+      console.log(event);
+      console.log(event.type);
       console.log('event.type === "VERSION_READY"',event.type === "VERSION_READY")
       if(event.type === "VERSION_READY"){
         Swal.fire({
