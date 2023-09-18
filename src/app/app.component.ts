@@ -49,11 +49,13 @@ export class AppComponent implements OnInit {
   updateClient(){
     console.log(this.update);
     if(!this.update.isEnabled){
+      console.log('!this.update.isEnabled')
       return;
     }
 
     this.update.versionUpdates.subscribe((event:any) => {
-      if(event.type === 'VERSION_READY'){
+      console.log('event.type === "VERSION_READY"',event.type === "VERSION_READY")
+      if(event.type === "VERSION_READY"){
         Swal.fire({
           title: 'Nueva version disponible',
           icon: 'info',
