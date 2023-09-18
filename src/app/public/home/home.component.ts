@@ -26,6 +26,7 @@ interface Conversion{
   moneda:string;
   valor:number;
   pesos:number;
+  pesosConImp:number;
 }
 
 interface Impuestos{
@@ -83,8 +84,10 @@ export class HomeComponent implements OnInit {
 
   constructor(private _cotizaciones:CotizacionesService){}
 
+
+  online:boolean = true;
   ngOnInit(): void {
-    
+    this.online = navigator.onLine;
     const randomCity = Math.floor(Math.random() * this.ciudades.length)
     console.log(randomCity)
     this.ciudadesClass = this.ciudades[randomCity];
@@ -100,7 +103,7 @@ export class HomeComponent implements OnInit {
     this.buscarCotizacion();
   }
 
-  cambiarConversion(cambio:string){
+  cambiarConversion(cambio:string,recalcular:boolean = true){
     this.activeCurrency = cambio;
     localStorage.setItem('tipoCambio',cambio);
     if(cambio == 'euros') {
@@ -109,7 +112,8 @@ export class HomeComponent implements OnInit {
       this.conversionActual = {
         moneda: cambio,
         valor: 1,
-        pesos: this.cotizaciones.euro.valor
+        pesos: this.cotizaciones.euro.valor,
+        pesosConImp: this.cotizaciones.euro.valorConImp
       }
     } else if(cambio == 'francos') {
       this.ultimaCotizacion = moment(this.cotizaciones.franco.fecha).format(this.formatoFecha);
@@ -117,7 +121,8 @@ export class HomeComponent implements OnInit {
       this.conversionActual = {
         moneda: cambio,
         valor: 1,
-        pesos: this.cotizaciones.franco.valor
+        pesos: this.cotizaciones.franco.valor,
+        pesosConImp: this.cotizaciones.franco.valorConImp
       }
     } else if(cambio == 'dolares'){
       this.ultimaCotizacion = moment(this.cotizaciones.dolar.fecha).format(this.formatoFecha);
@@ -125,11 +130,16 @@ export class HomeComponent implements OnInit {
       this.conversionActual = {
         moneda: cambio,
         valor: 1,
-        pesos: this.cotizaciones.dolar.valor
+        pesos: this.cotizaciones.dolar.valor,
+        pesosConImp: this.cotizaciones.dolar.valorConImp
       }
     }
 
     console.log(this.conversionActual)
+    console.log(this.valor);
+    if(recalcular && this.valor != ''){
+      this.calcularValor(+this.valor);
+    }
   }
 
   reloading:boolean = false;
@@ -162,46 +172,34 @@ export class HomeComponent implements OnInit {
             valorConImp:valorDolar
           }
         }
-        console.log(this.cotizaciones)
+        // console.log(this.cotizaciones)
 
         this.dolaresToEuros = +(this.cotizaciones.euro.valor / this.cotizaciones.dolar.valor).toFixed(2);
 
-        console.log(this.francosToEuros,this.dolaresToEuros);
+        // console.log(this.francosToEuros,this.dolaresToEuros);
 
         const limiteEuros = +(300 * (2 - this.dolaresToEuros)).toFixed(2);
         const limiteFrancos = +(limiteEuros * (2 - this.francosToEuros)).toFixed(2);
 
-        console.log({limiteEuros,limiteFrancos})
+        // console.log({limiteEuros,limiteFrancos})
 
         this.limiteImpCatar = {
           dolares: 300,
-          euros: +(300 * (2 - this.dolaresToEuros)).toFixed(2),
-          francos: +(300 * +(3 - this.dolaresToEuros - this.francosToEuros).toFixed(2)).toFixed(2)
+          euros: limiteEuros,
+          francos: limiteFrancos
         }
-
         console.log(this.limiteImpCatar)
+        
 
         localStorage.setItem('cotizaciones',JSON.stringify(this.cotizaciones))
 
         const cambio = localStorage.getItem('tipoCambio') || 'euros';
-        this.cambiarConversion(cambio);
+        this.cambiarConversion(cambio,false);
         this.loading = false;
         this.reloading = false;
         
       }
     );
-
-    // this.cotizaciones = {
-    //   euro: {
-    //     fecha: '2023-09-01',
-    //     valor: 1650
-    //   },
-    //   franco: {
-    //     fecha: '2023-08-31',
-    //     valor: 700
-    //   }
-    // }
-
   }
 
   keyDown(event?:any){
@@ -241,20 +239,51 @@ export class HomeComponent implements OnInit {
    
 
   // testValue:number = 0;
+  showStrImpCatar:string = '';
   calcularValor(valor:number){
-    let pesos = 0;
-    if(this.activeCurrency === 'euros'){
-      pesos = valor * this.cotizaciones.euro.valor;
-    } else if(this.activeCurrency === 'francos' ){
-      pesos = valor * this.cotizaciones.franco.valor;
-    } else if(this.activeCurrency === 'dolares'){
-      pesos = valor * this.cotizaciones.dolar.valor;
-    }
 
     this.conversionActual = {
       moneda: this.activeCurrency,
       valor: valor,
-      pesos: (valor >= 300 ) ? +(pesos * (this.imp.catar + 1)).toFixed(2) : pesos
+      pesos: 0,
+      pesosConImp: 0
+    }
+
+    let imp = 1;
+
+    if(this.activeCurrency === 'euros'){
+
+      if(valor < this.limiteImpCatar.euros ){
+        imp += (this.imp.rg4815 + this.imp.pais);
+      } else {
+        imp += (this.imp.rg4815 + this.imp.pais + this.imp.catar);
+        this.showStrImpCatar = `U$D 300 (≈ € ${this.limiteImpCatar.euros})`
+      }
+
+      this.conversionActual.pesos = valor * this.cotizaciones.euro.valor;
+      this.conversionActual.pesosConImp = +(valor * this.cotizaciones.euro.valor * imp).toFixed(2);
+    } else if(this.activeCurrency === 'francos' ){
+
+      if(valor < this.limiteImpCatar.francos ){
+        imp += (this.imp.rg4815 + this.imp.pais);
+      } else {
+        imp += (this.imp.rg4815 + this.imp.pais + this.imp.catar);
+        this.showStrImpCatar = `U$D 300 (≈ Fr. ${this.limiteImpCatar.francos})`;
+      }
+
+      this.conversionActual.pesos = valor * this.cotizaciones.franco.valor;
+      this.conversionActual.pesosConImp = +(valor * this.cotizaciones.franco.valor * imp).toFixed(2);
+    } else if(this.activeCurrency === 'dolares'){
+
+      if(valor < this.limiteImpCatar.dolares ){
+        imp += (this.imp.rg4815 + this.imp.pais);
+      } else {
+        imp += (this.imp.rg4815 + this.imp.pais + this.imp.catar);
+        this.showStrImpCatar = `U$D 300`;
+      }
+
+      this.conversionActual.pesos = valor * this.cotizaciones.dolar.valor;
+      this.conversionActual.pesosConImp = +(valor * this.cotizaciones.dolar.valor * imp).toFixed(2);
     }
 
     const existe = this.conversiones.findIndex(c => c.moneda == this.activeCurrency && c.valor == valor);
@@ -278,6 +307,7 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  
-
+  reload(){
+    window.location.reload();
+  }
 }

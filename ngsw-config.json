@@ -11,7 +11,10 @@
           "/index.html",
           "/manifest.webmanifest",
           "/*.css",
-          "/*.js"
+          "/*.js",
+          "/*.jpg",
+          "/assets/img/**",
+          "/assets/font-awesome-v6.2.0/**"
         ]
       }
     },

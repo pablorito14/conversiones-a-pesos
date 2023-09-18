@@ -1,5 +1,6 @@
-<div class="home {{ ciudadesClass }}">
-
+<!-- <div class="home -{{ ciudadesClass }}"> -->
+<button (click)="reload()">reload - {{ online | json }}</button>
+<div class="home">
   <div class="cargando" *ngIf="loading; else noLoading">
     <div>
       <h3>
@@ -15,10 +16,11 @@
     <div class="container">
       <div class="my-3">
         <div class="btn-group shadow w-100">
-          <a class="btn btn-secondary border-end" [class]="{'active': activeCurrency == 'dolares' }" (click)="cambiarConversion('dolares')">U$D {{ cotizaciones.dolar.valor }}</a>
-          <a class="btn btn-secondary border-start border-end" [class]="{'active': activeCurrency == 'euros' }" (click)="cambiarConversion('euros')">€ {{ cotizaciones.euro.valor }}</a>
-          <a class="btn btn-secondary border-start border-end" [class]="{'active': activeCurrency == 'francos' }" (click)="cambiarConversion('francos')">Fr. {{ cotizaciones.franco.valor }}</a>
-          <a class="btn btn-secondary border-start" (click)="buscarCotizacion(true)"><i [class]="{'fa-spin': reloading}" class="fa-duotone fa-rotate-right"></i></a>
+          
+          <a class="btn btn-secondary border-end" [class]="{'active': activeCurrency == 'dolares' }" (click)="cambiarConversion('dolares')">U$D {{ cotizaciones.dolar.valorConImp }}</a>
+          <a class="btn btn-secondary border-start border-end" [class]="{'active': activeCurrency == 'euros' }" (click)="cambiarConversion('euros')">€ {{ cotizaciones.euro.valorConImp }}</a>
+          <a class="btn btn-secondary border-start border-end" [class]="{'active': activeCurrency == 'francos' }" (click)="cambiarConversion('francos')">Fr. {{ cotizaciones.franco.valorConImp }}</a>
+          <a class="btn btn-secondary border-start" (click)="buscarCotizacion(true);limpiarInput()"><i [class]="{'fa-spin': reloading}" class="fa-duotone fa-rotate-right"></i></a>
         </div>
       </div>
       <div class="card my-3 shadow">
@@ -52,14 +54,14 @@
             <div class="col-5 text-end">
               <div class="fw-bold fs-5">
                 <span class="text-muted">$ </span> 
-                {{ conversionActual.pesos | currency:' ':'symbol':'3.0-2' }}
+                {{ conversionActual.pesosConImp | currency:' ':'symbol':'3.0-2' }}
               </div>
             </div>
           </div>
-          <p class="text-muted fs-6 text-center mb-0">
+          <p class="text-muted fs-6 text-center mb-0" *ngIf="showStrImpCatar != ''">
             <small>
               <sup class="text-danger">*</sup>
-              En gastos superiores a 300
+              Aplica impuesto Catar. Gasto superior a {{ showStrImpCatar }}
             </small>
           </p>
         </div>
@@ -81,7 +83,7 @@
             <div class="col-5 text-end">
               <div class="fw-bold fs-5">
                 <span class="text-muted">$ </span> 
-                {{ c.pesos | currency:' ':'symbol':'3.0-2' }}
+                {{ c.pesosConImp | currency:' ':'symbol':'3.0-2' }}
               </div>
             </div>
           </div>

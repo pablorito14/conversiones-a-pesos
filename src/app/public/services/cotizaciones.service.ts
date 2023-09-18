@@ -18,19 +18,7 @@ export class CotizacionesService {
 
   urlEuros:string = 'https://mercados.ambito.com//euro/variacion';
   urlDolares:string = 'https://mercados.ambito.com//dolar/oficial/variacion';
-  // getCotizacion(){
-  //   return this.http.get<CotizacionResponse>(this.url)
-  //               .pipe(
-  //                 map((c:CotizacionResponse) => {
-
-  //                   return {
-  //                     valor: +c.venta.replace(',','.'),
-  //                     fecha: c.fecha.split(' ')[0].split('/').reverse().join('-')
-  //                   };
-  //                 }),
-  //                 catchError(err => {console.log(err); return of({status:false}) })
-  //               )
-  // }
+  
   getCotizacion(){
     const euros = this.http.get<CotizacionResponse>(this.urlEuros);
     const dolares = this.http.get<CotizacionResponse>(this.urlDolares);
@@ -57,4 +45,7 @@ export class CotizacionesService {
       catchError(err => { console.log(err); return of({status:false})})
     )
   }
+
+  
 }
+
