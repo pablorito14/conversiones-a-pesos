@@ -42,9 +42,6 @@ interface Impuestos{
 })
 export class HomeComponent implements OnInit {
 
-  ciudades:string[] = ['zurich','roma','milan']
-  ciudadesClass:string = '';
-
   imp:Impuestos = {
     rg4815: 0.45,
     pais: 0.30,
@@ -82,15 +79,32 @@ export class HomeComponent implements OnInit {
   
   debouncer:Subject<number> = new Subject();
 
-  constructor(private _cotizaciones:CotizacionesService){}
-
-
   online:boolean = true;
+  constructor(private _cotizaciones:CotizacionesService){
+
+    window.addEventListener('online', (e) => {
+      console.log(window.navigator.onLine)
+      this.online = window.navigator.onLine
+    })
+
+    window.addEventListener('offline', (e) => {
+      console.log(window.navigator.onLine)
+      this.online = window.navigator.onLine
+    })
+
+    // if(!navigator.onLine){
+    //   notificacion.fire(
+    //     'Algunas funciones pueden no estar disponibles',
+    //     'Sin conexión a internet'
+    //   )
+    // }
+  }
+
+
+  
   ngOnInit(): void {
-    this.online = navigator.onLine;
-    const randomCity = Math.floor(Math.random() * this.ciudades.length)
-    console.log(randomCity)
-    this.ciudadesClass = this.ciudades[randomCity];
+    
+    
     this.debouncer
         .pipe(debounceTime(1000))
         .subscribe(valor => {

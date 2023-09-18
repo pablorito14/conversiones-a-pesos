@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1695054070704,
+  "timestamp": 1695056481886,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -29,10 +29,10 @@
         "/background.bcd11935e0ea7f5d.jpg",
         "/favicon.ico",
         "/index.html",
-        "/main.16d9a92d06027acb.js",
+        "/main.aaa98d475f2b8113.js",
         "/manifest.webmanifest",
         "/polyfills.e0bb9c46f55ced86.js",
-        "/runtime.bb47e008b8fed845.js",
+        "/runtime.ab79a1e845fd8216.js",
         "/scripts.c835cf0c315fc5c5.js",
         "/styles.8050ed99caa97375.css"
       ],
@@ -99,11 +99,11 @@
     "/assets/splashscreens/iphonexsmax_splash.png": "cd03c410e970995f0ebf6e741de046bee51c31c1",
     "/background.bcd11935e0ea7f5d.jpg": "73d8e7ca0dd89e8e4f1c03a38ed4b62dfaad7de1",
     "/favicon.ico": "bd71fbe2a43df66022942ab3a917b5e98403e01e",
-    "/index.html": "adc8969277910ff6aa9b4201dde235a8a6504c55",
-    "/main.16d9a92d06027acb.js": "9483cd8768b57b93fabf92a7ff33bfa4ce02f3b0",
+    "/index.html": "2fcb8123a91c4e7e0ff350655077d5347390262e",
+    "/main.aaa98d475f2b8113.js": "19c425b66a71ad984f3e1d18136c983ec4589d43",
     "/manifest.webmanifest": "874ceefea69bc5d4901edd4786e7f3b7d38ab613",
     "/polyfills.e0bb9c46f55ced86.js": "a4d4e96dfed468ca5cf36006e1b41c4175fabfd2",
-    "/runtime.bb47e008b8fed845.js": "cbd850ed02b2256c74a4476d51b569838baad42b",
+    "/runtime.ab79a1e845fd8216.js": "a46ed270c3dbfc5ee7882fa19af535f12c7373fa",
     "/scripts.c835cf0c315fc5c5.js": "817bc522f82c76de4ce40ee4cf76fc3b61d9f03c",
     "/styles.8050ed99caa97375.css": "26257e491f79ea60b4bceb561490a02c70408d96"
   },

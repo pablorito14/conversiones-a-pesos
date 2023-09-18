@@ -1,6 +1,6 @@
 <!-- <div class="home -{{ ciudadesClass }}"> -->
-<button (click)="reload()">reload - {{ online | json }}</button>
 <div class="home">
+  <span class="btn btn-primary">{{ online }}</span>
   <div class="cargando" *ngIf="loading; else noLoading">
     <div>
       <h3>
