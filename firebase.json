@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "site":"conversiones-a-pesos",
+    "public": "docs",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}

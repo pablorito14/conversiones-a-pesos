@@ -11,7 +11,9 @@
           "/index.html",
           "/manifest.webmanifest",
           "/*.css",
-          "/*.js"
+          "/*.js",
+          "/*.webp",
+          "/assets/font-awesome-v6.2.0/**"
         ]
       }
     },
@@ -24,6 +26,21 @@
           "/assets/**",
           "/*.(svg|cur|jpg|jpeg|png|apng|webp|avif|gif|otf|ttf|woff|woff2)"
         ]
+      }
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "data",
+      "urls": [
+        "https://mercados.ambito.com//euro/variacion",
+        "https://mercados.ambito.com//dolar/oficial/variacion"
+      ],
+      "cacheConfig": {
+        "strategy": "freshness",
+        "maxSize": 5,
+        "maxAge": "5d",
+        "timeout": "5s"
       }
     }
   ]

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, map, of, zip } from 'rxjs';
+import { catchError, delay, map, of, zip } from 'rxjs';
 import * as moment from 'moment';
 
 interface CotizacionResponse {
@@ -27,6 +27,7 @@ export class CotizacionesService {
     const request = zip(euros,dolares);
 
     return request.pipe(
+      delay(3000),
       map((c:CotizacionResponse[]) => {
         const euros = c.at(0);
         const dolares = c.at(1);

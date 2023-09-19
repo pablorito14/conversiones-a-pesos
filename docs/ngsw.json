@@ -1,30 +1,11 @@
 {
   "configVersion": 1,
-  "timestamp": 1695069444764,
+  "timestamp": 1695136811477,
   "index": "/index.html",
   "assetGroups": [
     {
       "name": "app",
       "installMode": "prefetch",
-      "updateMode": "prefetch",
-      "cacheQueryOptions": {
-        "ignoreVary": true
-      },
-      "urls": [
-        "/favicon.ico",
-        "/index.html",
-        "/main.b03dbe704cf0a414.js",
-        "/manifest.webmanifest",
-        "/polyfills.e0bb9c46f55ced86.js",
-        "/runtime.ab79a1e845fd8216.js",
-        "/scripts.c835cf0c315fc5c5.js",
-        "/styles.8050ed99caa97375.css"
-      ],
-      "patterns": []
-    },
-    {
-      "name": "assets",
-      "installMode": "lazy",
       "updateMode": "prefetch",
       "cacheQueryOptions": {
         "ignoreVary": true
@@ -41,15 +22,32 @@
         "/assets/font-awesome-v6.2.0/webfonts/pro-fa-solid-900-03c840.woff2",
         "/assets/font-awesome-v6.2.0/webfonts/pro-fa-solid-900-51b08f.ttf",
         "/assets/font-awesome-v6.2.0/webfonts/pro-fa-solid-900-51b08f.woff2",
+        "/background.acc2358da4ab2260.webp",
+        "/favicon.ico",
+        "/index.html",
+        "/main.4233a52f52453d54.js",
+        "/manifest.webmanifest",
+        "/polyfills.e0bb9c46f55ced86.js",
+        "/runtime.ab79a1e845fd8216.js",
+        "/scripts.c835cf0c315fc5c5.js",
+        "/styles.8050ed99caa97375.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
         "/assets/icons/icon-128x128.png",
         "/assets/icons/icon-144x144.png",
         "/assets/icons/icon-512x512.png",
         "/assets/icons/icon-72x72.png",
         "/assets/icons/icon-96x96.png",
-        "/assets/img/background.jpg",
-        "/assets/img/milan.jpeg",
-        "/assets/img/roma.jpg",
-        "/assets/img/zurich.jpg",
+        "/assets/img/background.webp",
         "/assets/splashscreens/ipad_splash.png",
         "/assets/splashscreens/ipadpro1_splash.png",
         "/assets/splashscreens/ipadpro2_splash.png",
@@ -59,13 +57,28 @@
         "/assets/splashscreens/iphoneplus_splash.png",
         "/assets/splashscreens/iphonex_splash.png",
         "/assets/splashscreens/iphonexr_splash.png",
-        "/assets/splashscreens/iphonexsmax_splash.png",
-        "/background.bcd11935e0ea7f5d.jpg"
+        "/assets/splashscreens/iphonexsmax_splash.png"
       ],
       "patterns": []
     }
   ],
-  "dataGroups": [],
+  "dataGroups": [
+    {
+      "name": "data",
+      "patterns": [
+        "https:\\/\\/mercados\\.ambito\\.com\\/\\/euro\\/variacion",
+        "https:\\/\\/mercados\\.ambito\\.com\\/\\/dolar\\/oficial\\/variacion"
+      ],
+      "strategy": "freshness",
+      "maxSize": 5,
+      "maxAge": 432000000,
+      "timeoutMs": 5000,
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "version": 1
+    }
+  ],
   "hashTable": {
     "/assets/font-awesome-v6.2.0/css/all.min.css": "cde802df65910cb5fcfd882d90a59a70394f4c06",
     "/assets/font-awesome-v6.2.0/webfonts/pro-fa-duotone-900-3523ab.ttf": "83fb2ee8aefc1f18aa823bf0e18cb6886a16caeb",
@@ -83,10 +96,7 @@
     "/assets/icons/icon-512x512.png": "d538b467495eb164912600ff6c34252f92043c29",
     "/assets/icons/icon-72x72.png": "6cf3af2957b27eba500b04a4af58b405a9736b1c",
     "/assets/icons/icon-96x96.png": "1549944642d0ae275fdc8afc351706f0ecf2d175",
-    "/assets/img/background.jpg": "73d8e7ca0dd89e8e4f1c03a38ed4b62dfaad7de1",
-    "/assets/img/milan.jpeg": "c666f138d28148ce3ac0256ffc1fd1b8af2b0804",
-    "/assets/img/roma.jpg": "b63af1e0b593cb2061fdd9559dae9ec6acb42666",
-    "/assets/img/zurich.jpg": "9bb9a40be9363297072c4f5bf09076f1ed76b4bc",
+    "/assets/img/background.webp": "0f47fd0c941958fb26f42123730e353c0f2f6f68",
     "/assets/splashscreens/ipad_splash.png": "49b3b2447cf1a16bbff1f36baa3eab83e2e55942",
     "/assets/splashscreens/ipadpro1_splash.png": "daf7070e67172638b225209a2aeb1aee914b4cf2",
     "/assets/splashscreens/ipadpro2_splash.png": "f65f14b156b3de90e59b06054ae87810aa38bbf1",
@@ -97,10 +107,10 @@
     "/assets/splashscreens/iphonex_splash.png": "54e6fbc599ba3d9a74fdf876a44f3c0889c8cadf",
     "/assets/splashscreens/iphonexr_splash.png": "05f9b5cc75a17d08821d6ff70a2e47685ed54063",
     "/assets/splashscreens/iphonexsmax_splash.png": "cd03c410e970995f0ebf6e741de046bee51c31c1",
-    "/background.bcd11935e0ea7f5d.jpg": "73d8e7ca0dd89e8e4f1c03a38ed4b62dfaad7de1",
+    "/background.acc2358da4ab2260.webp": "0f47fd0c941958fb26f42123730e353c0f2f6f68",
     "/favicon.ico": "bd71fbe2a43df66022942ab3a917b5e98403e01e",
-    "/index.html": "b8f54e5febf09cd3596fc25240e4acb6422460d9",
-    "/main.b03dbe704cf0a414.js": "6ae5193307502ef5025883b98f8a82c22618f5c0",
+    "/index.html": "1597a9045c651446b2454d09091dd5825ea641d3",
+    "/main.4233a52f52453d54.js": "f96241c551f20ba82a29adb2dcfb35fed23d12a1",
     "/manifest.webmanifest": "be7379f13a6410e2473a06beadb7ea36ccb563ba",
     "/polyfills.e0bb9c46f55ced86.js": "a4d4e96dfed468ca5cf36006e1b41c4175fabfd2",
     "/runtime.ab79a1e845fd8216.js": "a46ed270c3dbfc5ee7882fa19af535f12c7373fa",

@@ -22,16 +22,6 @@ export class AppComponent implements OnInit {
       timerProgressBar: true,
     })
 
-    window.addEventListener('online', (e) => {
-      console.log(window.navigator.onLine)
-      notificacion.fire('Con conexión', '', 'success')
-    })
-
-    window.addEventListener('offline', (e) => {
-      console.log(window.navigator.onLine)
-      notificacion.fire('Sin conexión', '', 'error')
-    })
-
     if(!navigator.onLine){
       notificacion.fire(
         'Algunas funciones pueden no estar disponibles',
@@ -47,16 +37,13 @@ export class AppComponent implements OnInit {
   }
 
   updateClient(){
-    console.log(this.update);
+    
     if(!this.update.isEnabled){
-      console.log('!this.update.isEnabled')
       return;
     }
 
     this.update.versionUpdates.subscribe((event:any) => {
-      console.log(event);
-      console.log(event.type);
-      console.log('event.type === "VERSION_READY"',event.type === "VERSION_READY")
+     
       if(event.type === "VERSION_READY"){
         Swal.fire({
           title: 'Nueva version disponible',

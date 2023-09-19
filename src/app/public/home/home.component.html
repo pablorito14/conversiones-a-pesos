@@ -1,6 +1,4 @@
-<!-- <div class="home -{{ ciudadesClass }}"> -->
 <div class="home">
-  <span class="btn btn-primary">{{ online }} - 5</span>
   <div class="cargando" *ngIf="loading; else noLoading">
     <div>
       <h3>
@@ -13,16 +11,38 @@
   </div>
 
   <ng-template #noLoading>
+
+    <nav class="navbar fixed-top bg-secondary shadow">
+      
+      <div class="container-fluid">
+        <a href="#" class="navbar-brand text-light border-" [class]="{'active-currency': activeCurrency == 'dolares' }" (click)="cambiarConversion('dolares')">U$D {{ cotizaciones.dolar.valorConImp }}</a>
+        <a href="#" class="navbar-brand text-light border-" [class]="{'active-currency': activeCurrency == 'euros' }" (click)="cambiarConversion('euros')">€ {{ cotizaciones.euro.valorConImp }}</a>
+        <a href="#" class="navbar-brand text-light border-bottom-" [class]="{'active-currency': activeCurrency == 'francos' }" (click)="cambiarConversion('francos')">Fr. {{ cotizaciones.franco.valorConImp }}</a>
+        <a href="#" class="navbar-brand text-light border-bottom-" (click)="buscarCotizacion(true);limpiarInput()"><i [class]="{'fa-spin': reloading}" class="fa-duotone fa-rotate-right"></i></a>
+      </div>
+    </nav>
+
+    <!-- <div class="container px-0 v">
+      <div class="btn-group shadow w-100">
+        <div class="btn btn-secondary border-end" role="button" [class]="{'active-currency': activeCurrency == 'dolares' }" (click)="cambiarConversion('dolares')">U$D {{ cotizaciones.dolar.valorConImp }}</div>
+        <div class="btn btn-secondary border-start border-end" role="button" [class]="{'active-currency': activeCurrency == 'euros' }" (click)="cambiarConversion('euros')">€ {{ cotizaciones.euro.valorConImp }}</div>
+        <div class="btn btn-secondary border-start border-end" role="button" [class]="{'active-currency': activeCurrency == 'francos' }" (click)="cambiarConversion('francos')">Fr. {{ cotizaciones.franco.valorConImp }}</div>
+        <div class="btn btn-secondary border-start" role="button" (click)="buscarCotizacion(true);limpiarInput()"><i [class]="{'fa-spin': reloading}" class="fa-duotone fa-rotate-right"></i></div>
+      </div>
+    </div> -->
+    
     <div class="container">
-      <div class="my-3">
+      <!-- <div class="my-3-">
         <div class="btn-group shadow w-100">
           
-          <a class="btn btn-secondary border-end" [class]="{'active': activeCurrency == 'dolares' }" (click)="cambiarConversion('dolares')">U$D {{ cotizaciones.dolar.valorConImp }}</a>
-          <a class="btn btn-secondary border-start border-end" [class]="{'active': activeCurrency == 'euros' }" (click)="cambiarConversion('euros')">€ {{ cotizaciones.euro.valorConImp }}</a>
-          <a class="btn btn-secondary border-start border-end" [class]="{'active': activeCurrency == 'francos' }" (click)="cambiarConversion('francos')">Fr. {{ cotizaciones.franco.valorConImp }}</a>
-          <a class="btn btn-secondary border-start" (click)="buscarCotizacion(true);limpiarInput()"><i [class]="{'fa-spin': reloading}" class="fa-duotone fa-rotate-right"></i></a>
+          <span class="btn btn-secondary border-end" [class]="{'active': activeCurrency == 'dolares' }" (click)="cambiarConversion('dolares')">U$D {{ cotizaciones.dolar.valorConImp }}</span>
+          <span class="btn btn-secondary border-start border-end" [class]="{'active': activeCurrency == 'euros' }" (click)="cambiarConversion('euros')">€ {{ cotizaciones.euro.valorConImp }}</span>
+          <span class="btn btn-secondary border-start border-end" [class]="{'active': activeCurrency == 'francos' }" (click)="cambiarConversion('francos')">Fr. {{ cotizaciones.franco.valorConImp }}</span>
+          <span class="btn btn-secondary border-start" (click)="buscarCotizacion(true);limpiarInput()"><i [class]="{'fa-spin': reloading}" class="fa-duotone fa-rotate-right"></i></span>
         </div>
-      </div>
+      </div> -->
+      
+  
       <div class="card my-3 shadow">
         <div class="card-body">
           <h3 class="text-center">Conversion de {{ activeCurrency }} a pesos</h3>
