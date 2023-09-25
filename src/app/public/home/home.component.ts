@@ -3,38 +3,10 @@ import * as moment from 'moment';
 import { Subject, timer } from 'rxjs';
 import { debounceTime, delay } from 'rxjs/operators';
 import { CotizacionesService } from '../services/cotizaciones.service';
-import Swal from 'sweetalert2';
-
-interface Cotizacion {
-  euro:{
-    fecha:string;
-    valor:number;
-    valorConImp:number;
-  };
-  franco:{
-    fecha:string;
-    valor: number;
-    valorConImp:number;
-  },
-  dolar: {
-    fecha:string;
-    valor:number;
-    valorConImp:number;
-  }
-}
-
-interface Conversion{
-  moneda:string;
-  valor:number;
-  pesos:number;
-  pesosConImp:number;
-}
-
-interface Impuestos{
-  rg4815:number;
-  pais:number;
-  catar:number;
-}
+import { Impuestos } from '../interfaces/impuestos.interface';
+import { Cotizacion } from '../interfaces/cotizacion.interface';
+import { Conversion } from '../interfaces/conversion.interface';
+import { Configuracion } from '../interfaces/configuracion.interface';
 
 @Component({
   selector: 'app-home',
@@ -70,7 +42,8 @@ export class HomeComponent implements OnInit {
   
   // cambio:string = 'euros'
   
-  cotizaciones!: Cotizacion;
+  // cotizaciones!: Cotizacion;
+  cotizaciones:any;
   ultimaCotizacion:string = '';
 
   formatoFecha:string = 'D [de] MMMM';
@@ -95,13 +68,12 @@ export class HomeComponent implements OnInit {
     })
   }
 
+  config!:Configuracion;
 
-  
   ngOnInit(): void {
-    
-    
+    this.config = JSON.parse(localStorage.getItem('config')!);
     this.debouncer
-        .pipe(debounceTime(1000))
+        .pipe(debounceTime(this.config.tiempo*1000))
         .subscribe(valor => {
 
           if(valor > 0){
@@ -112,7 +84,7 @@ export class HomeComponent implements OnInit {
     this.buscarCotizacion();
     // setTimeout(() => {
     //   this.randomConversion();  
-    // }, 3000);
+    // }, 5000);
     
   }
 
@@ -120,48 +92,150 @@ export class HomeComponent implements OnInit {
     for (let index = 0; index < 30; index++) {
       const currency = ['euros','francos','dolares'];
       this.activeCurrency = currency[Math.floor(Math.random() * 3)]
-      this.calcularValor(Math.floor(Math.random() * 15))
+      this.calcularValor(Math.floor(Math.random() * 30))
       
     }
   }
 
-  cambiarConversion(cambio:string,recalcular:boolean = true){
-    this.activeCurrency = cambio;
+  tipoConversion!:string;
+  cambiarConversion(cambio:string = '',recalcular:boolean = true){
+    // console.log(cambio)
+    if(cambio == '') {
+      cambio = this.tipoConversion
+    };
+    // console.log(cambio,this.tipoConversion)
+    // this.activeCurrency = cambio;
     localStorage.setItem('tipoCambio',cambio);
-    if(cambio == 'euros') {
-      this.ultimaCotizacion = moment(this.cotizaciones.euro.fecha).format(this.formatoFecha);
 
+    if(cambio == 'euroToPesos') {
+      this.ultimaCotizacion = moment(this.cotizaciones.euroToPesos.fecha).format(this.formatoFecha);
+      this.activeCurrency = 'euros a pesos';
       this.conversionActual = {
         moneda: cambio,
         valor: 1,
-        pesos: this.cotizaciones.euro.valor,
-        pesosConImp: this.cotizaciones.euro.valorConImp
+        pesos: this.cotizaciones.euroToPesos.valor,
+        pesosConImp: this.cotizaciones.euroToPesos.valorConImp
       }
-    } else if(cambio == 'francos') {
-      this.ultimaCotizacion = moment(this.cotizaciones.franco.fecha).format(this.formatoFecha);
-
+    } else if(cambio == 'francoToPesos') {
+      this.ultimaCotizacion = moment(this.cotizaciones.francoToPesos.fecha).format(this.formatoFecha);
+      this.activeCurrency = 'francos a pesos';
       this.conversionActual = {
         moneda: cambio,
         valor: 1,
-        pesos: this.cotizaciones.franco.valor,
-        pesosConImp: this.cotizaciones.franco.valorConImp
+        pesos: this.cotizaciones.francoToPesos.valor,
+        pesosConImp: this.cotizaciones.francoToPesos.valorConImp
       }
-    } else if(cambio == 'dolares'){
-      this.ultimaCotizacion = moment(this.cotizaciones.dolar.fecha).format(this.formatoFecha);
-
+    } else if(cambio == 'dolarToPesos'){
+      this.ultimaCotizacion = moment(this.cotizaciones.dolarToPesos.fecha).format(this.formatoFecha);
+      this.activeCurrency = 'dólares a pesos';
       this.conversionActual = {
         moneda: cambio,
         valor: 1,
-        pesos: this.cotizaciones.dolar.valor,
-        pesosConImp: this.cotizaciones.dolar.valorConImp
+        pesos: this.cotizaciones.dolarToPesos.valor,
+        pesosConImp: this.cotizaciones.dolarToPesos.valorConImp
+      }
+    } else if(cambio == 'euroToDolares'){
+      this.ultimaCotizacion = moment(this.cotizaciones.euroToDolares.fecha).format(this.formatoFecha);
+      this.activeCurrency = 'euros a dólares';
+      this.conversionActual = {
+        moneda: cambio,
+        valor: 1,
+        pesos: this.cotizaciones.euroToDolares.valor,
+        pesosConImp: this.cotizaciones.euroToDolares.valor
+      }
+    } else if(cambio == 'francoToEuros'){
+      this.ultimaCotizacion = moment(this.cotizaciones.francoToEuros.fecha).format(this.formatoFecha);
+      this.activeCurrency = 'francos a euros';
+      this.conversionActual = {
+        moneda: cambio,
+        valor: 1,
+        pesos: this.cotizaciones.francoToEuros.valor,
+        pesosConImp: this.cotizaciones.francoToEuros.valor
+      }
+    } else if(cambio == 'francoToDolares'){
+      this.ultimaCotizacion = moment(this.cotizaciones.francoToDolares.fecha).format(this.formatoFecha);
+      this.activeCurrency = 'francos a dólares';
+      this.conversionActual = {
+        moneda: cambio,
+        valor: 1,
+        pesos: this.cotizaciones.francoToDolares.valor,
+        pesosConImp: this.cotizaciones.francoToDolares.valor
       }
     }
-
-    console.log(this.conversionActual)
-    if(recalcular && this.valor != ''){
+    if(recalcular && this.valor != '' && this.config.calcularAlCambiar){
       this.calcularValor(+this.valor);
-    }
+    } else if(recalcular && this.valor != '' && !this.config.calcularAlCambiar){
+      this.limpiarInput();
+    } 
+    
   }
+  // cambiarConversion(cambio:string,recalcular:boolean = true){
+  //   console.log(cambio)
+  //   this.activeCurrency = cambio;
+  //   localStorage.setItem('tipoCambio',cambio);
+  //   if(cambio == 'euroToPesos') {
+  //     this.ultimaCotizacion = moment(this.cotizaciones.euroToPesos.fecha).format(this.formatoFecha);
+
+  //     this.conversionActual = {
+  //       moneda: cambio,
+  //       valor: 1,
+  //       pesos: this.cotizaciones.euroToPesos.valor,
+  //       pesosConImp: this.cotizaciones.euroToPesos.valorConImp
+  //     }
+  //   } else if(cambio == 'francoToPesos') {
+  //     this.ultimaCotizacion = moment(this.cotizaciones.francoToPesos.fecha).format(this.formatoFecha);
+
+  //     this.conversionActual = {
+  //       moneda: cambio,
+  //       valor: 1,
+  //       pesos: this.cotizaciones.francoToPesos.valor,
+  //       pesosConImp: this.cotizaciones.francoToPesos.valorConImp
+  //     }
+  //   } else if(cambio == 'dolarToPesos'){
+  //     this.ultimaCotizacion = moment(this.cotizaciones.dolarToPesos.fecha).format(this.formatoFecha);
+
+  //     this.conversionActual = {
+  //       moneda: cambio,
+  //       valor: 1,
+  //       pesos: this.cotizaciones.dolarToPesos.valor,
+  //       pesosConImp: this.cotizaciones.dolarToPesos.valorConImp
+  //     }
+  //   } else if(cambio == 'euroToDolares'){
+  //     this.ultimaCotizacion = cambio;
+
+  //     this.conversionActual = {
+  //       moneda: cambio,
+  //       valor: 1,
+  //       pesos: this.cotizaciones.euroToDolares.valor,
+  //       // pesosConImp: this.cotizaciones.euroToDoalres.valorConImp
+  //     }
+  //   } else if(cambio == 'francoToEuros'){
+  //     this.ultimaCotizacion = cambio;
+
+  //     this.conversionActual = {
+  //       moneda: cambio,
+  //       valor: 1,
+  //       pesos: this.cotizaciones.francoToEuros.valor,
+  //       // pesosConImp: this.cotizaciones.dolarToPesos.valorConImp
+  //     }
+  //   } else if(cambio == 'francoToDolares'){
+  //     this.ultimaCotizacion = cambio;
+
+  //     this.conversionActual = {
+  //       moneda: cambio,
+  //       valor: 1,
+  //       pesos: this.cotizaciones.francoToDolares.valor,
+  //       // pesosConImp: this.cotizaciones.dolarToPesos.valorConImp
+  //     }
+  //   }
+
+    
+  //   if(recalcular && this.valor != '' && this.config.calcularAlCambiar){
+  //     this.calcularValor(+this.valor);
+  //   } else if(this.valor != '' && !this.config.calcularAlCambiar){
+  //     this.limpiarInput();
+  //   } 
+  // }
 
   reloading:boolean = false;
   buscarCotizacion(reload:boolean = false){
@@ -169,33 +243,53 @@ export class HomeComponent implements OnInit {
 
     this._cotizaciones.getCotizacion().subscribe((cot:any) => {
       
-      // const valorDolar = +(cot.dolar.valor * (this.imp.rg4815 +1) * (this.imp.pais + 1)).toFixed(2);
-      // const valorEuro = +(cot.euro.valor * (this.imp.rg4815 + 1) * (this.imp.pais + 1)).toFixed(2);
       const valorDolar = +(cot.dolar.valor * (this.imp.rg4815 + this.imp.pais + 1)).toFixed(2);
       const valorEuro = +(cot.euro.valor * (this.imp.rg4815 + this.imp.pais + 1)).toFixed(2);
       const valorFranco = +(cot.euro.valor * this.francosToEuros).toFixed(2)
-      // const valorFrancoConImp = +(alorEuro * this.francosToEuros).toFixed(2);
       const valorFrancoConImp = +(valorFranco * (this.imp.rg4815 + this.imp.pais + 1)).toFixed(2);
 
+
+
       this.cotizaciones = {
-        euro: {
+        euroToPesos: {
+          label: 'euros a pesos',
           fecha: cot.euro.fecha,
           valor: cot.euro.valor,
           valorConImp: valorEuro
         },
-        franco: {
+        francoToPesos: {
+          label: 'francos a pesos',
           fecha: cot.euro.fecha,
           valor: valorFranco,
           valorConImp: valorFrancoConImp
         },
-        dolar:{
+        dolarToPesos:{
+          label: 'dólares a pesos',
           fecha: cot.dolar.fecha,
           valor: cot.dolar.valor,
           valorConImp:valorDolar
+        },
+        euroToDolares:{
+          label: 'euros a dólares',
+          fecha: cot.euro.fecha,
+          valor: +(cot.euro.valor / cot.dolar.valor).toFixed(2),
+          valorConImp: +(cot.euro.valor / cot.dolar.valor).toFixed(2)
+        },
+        francoToEuros:{
+          label: 'francos a euros',
+          fecha: cot.euro.fecha,
+          valor: +(valorFranco / cot.euro.valor).toFixed(2),
+          valorConImp: +(valorFranco / cot.euro.valor).toFixed(2)
+        },
+        francoToDolares:{
+          label: 'francos a dólares',
+          fecha: cot.euro.fecha,
+          valor: +(valorFranco / cot.dolar.valor).toFixed(2),
+          valorConImp: +(valorFranco / cot.dolar.valor).toFixed(2)
         }
       }
 
-      this.dolaresToEuros = +(this.cotizaciones.euro.valor / this.cotizaciones.dolar.valor).toFixed(2);
+      this.dolaresToEuros = +(this.cotizaciones.euroToPesos.valor / this.cotizaciones.dolarToPesos.valor).toFixed(2);
 
       const limiteEuros = +(300 * (2 - this.dolaresToEuros)).toFixed(2);
       const limiteFrancos = +(limiteEuros * (2 - this.francosToEuros)).toFixed(2);
@@ -205,12 +299,12 @@ export class HomeComponent implements OnInit {
         euros: limiteEuros,
         francos: limiteFrancos
       }
-      console.log(this.limiteImpCatar)
       
 
       localStorage.setItem('cotizaciones',JSON.stringify(this.cotizaciones))
 
-      const cambio = localStorage.getItem('tipoCambio') || 'euros';
+      const cambio = localStorage.getItem('tipoCambio') || 'euroToPesos';
+      this.tipoConversion = cambio;
       this.cambiarConversion(cambio,false);
       this.loading = false;
       this.reloading = false;
@@ -250,25 +344,33 @@ export class HomeComponent implements OnInit {
   limpiarInput(){
     this.valor = '';
     this.showStrImpCatar = '';
-    this.input.nativeElement.focus();
-    const cambio = localStorage.getItem('tipoCambio') || 'euros';
-    this.cambiarConversion(cambio,false);
+    // this.input.nativeElement.focus();
+    // console.log(this.conversionActual)
+
     
+    // console.log(this.cotizaciones['francoToEuros'])
+    // console.log(this.cotizaciones[this.conversionActual.moneda])
+    this.conversionActual = {
+      valor: 1,
+      moneda: this.conversionActual.moneda,
+      pesos: this.cotizaciones[this.conversionActual.moneda].valor,
+      pesosConImp: this.cotizaciones[this.conversionActual.moneda].valorConImp
+    }
+
   }
    
   showStrImpCatar:string = '';
   calcularValor(valor:number){
 
     this.conversionActual = {
-      moneda: this.activeCurrency,
+      moneda: this.tipoConversion,
       valor: valor,
       pesos: 0,
       pesosConImp: 0
     }
 
     let imp = 1;
-
-    if(this.activeCurrency === 'euros'){
+    if(this.tipoConversion === 'euroToPesos'){
 
       if(valor < this.limiteImpCatar.euros ){
         imp += (this.imp.rg4815 + this.imp.pais);
@@ -278,9 +380,9 @@ export class HomeComponent implements OnInit {
         this.showStrImpCatar = `U$D 300 (≈ € ${this.limiteImpCatar.euros})`
       }
 
-      this.conversionActual.pesos = valor * this.cotizaciones.euro.valor;
-      this.conversionActual.pesosConImp = +(valor * this.cotizaciones.euro.valor * imp).toFixed(2);
-    } else if(this.activeCurrency === 'francos' ){
+      this.conversionActual.pesos = valor * this.cotizaciones.euroToPesos.valor;
+      this.conversionActual.pesosConImp = +(valor * this.cotizaciones.euroToPesos.valor * imp).toFixed(2);
+    } else if(this.tipoConversion === 'francoToPesos' ){
 
       if(valor < this.limiteImpCatar.francos ){
         this.showStrImpCatar = '';
@@ -290,9 +392,9 @@ export class HomeComponent implements OnInit {
         this.showStrImpCatar = `U$D 300 (≈ Fr. ${this.limiteImpCatar.francos})`;
       }
 
-      this.conversionActual.pesos = valor * this.cotizaciones.franco.valor;
-      this.conversionActual.pesosConImp = +(valor * this.cotizaciones.franco.valor * imp).toFixed(2);
-    } else if(this.activeCurrency === 'dolares'){
+      this.conversionActual.pesos = valor * this.cotizaciones.francoToPesos.valor;
+      this.conversionActual.pesosConImp = +(valor * this.cotizaciones.francoToPesos.valor * imp).toFixed(2);
+    } else if(this.tipoConversion === 'dolarToPesos'){
 
       if(valor < this.limiteImpCatar.dolares ){
         imp += (this.imp.rg4815 + this.imp.pais);
@@ -302,11 +404,60 @@ export class HomeComponent implements OnInit {
         this.showStrImpCatar = `U$D 300`;
       }
 
-      this.conversionActual.pesos = valor * this.cotizaciones.dolar.valor;
-      this.conversionActual.pesosConImp = +(valor * this.cotizaciones.dolar.valor * imp).toFixed(2);
-    }
+      this.conversionActual.pesos = valor * this.cotizaciones.dolarToPesos.valor;
+      this.conversionActual.pesosConImp = +(valor * this.cotizaciones.dolarToPesos.valor * imp).toFixed(2);
+    } else if(this.tipoConversion == 'francoToDolares') {
+      this.showStrImpCatar = '';
+      this.conversionActual.pesos = this.conversionActual.pesosConImp = valor * this.cotizaciones.francoToDolares.valor;
+      
+    } else if(this.tipoConversion == 'euroToDolares') {
+      this.showStrImpCatar = '';
 
-    const existe = this.conversiones.findIndex(c => c.moneda == this.activeCurrency && c.valor == valor);
+      this.conversionActual.pesos = this.conversionActual.pesosConImp = valor * this.cotizaciones.euroToDolares.valor;
+    } else if(this.tipoConversion == 'francoToEuros') {
+      this.showStrImpCatar = '';
+
+      this.conversionActual.pesos = this.conversionActual.pesosConImp = valor * this.cotizaciones.francoToEuros.valor;
+    }
+    // if(this.activeCurrency === 'euros'){
+
+    //   if(valor < this.limiteImpCatar.euros ){
+    //     imp += (this.imp.rg4815 + this.imp.pais);
+    //     this.showStrImpCatar = '';
+    //   } else {
+    //     imp += (this.imp.rg4815 + this.imp.pais + this.imp.catar);
+    //     this.showStrImpCatar = `U$D 300 (≈ € ${this.limiteImpCatar.euros})`
+    //   }
+
+    //   this.conversionActual.pesos = valor * this.cotizaciones.euroToPesos.valor;
+    //   this.conversionActual.pesosConImp = +(valor * this.cotizaciones.euroToPesos.valor * imp).toFixed(2);
+    // } else if(this.activeCurrency === 'francos' ){
+
+    //   if(valor < this.limiteImpCatar.francos ){
+    //     this.showStrImpCatar = '';
+    //     imp += (this.imp.rg4815 + this.imp.pais);
+    //   } else {
+    //     imp += (this.imp.rg4815 + this.imp.pais + this.imp.catar);
+    //     this.showStrImpCatar = `U$D 300 (≈ Fr. ${this.limiteImpCatar.francos})`;
+    //   }
+
+    //   this.conversionActual.pesos = valor * this.cotizaciones.francoToPesos.valor;
+    //   this.conversionActual.pesosConImp = +(valor * this.cotizaciones.francoToPesos.valor * imp).toFixed(2);
+    // } else if(this.activeCurrency === 'dolares'){
+
+    //   if(valor < this.limiteImpCatar.dolares ){
+    //     imp += (this.imp.rg4815 + this.imp.pais);
+    //     this.showStrImpCatar = '';
+    //   } else {
+    //     imp += (this.imp.rg4815 + this.imp.pais + this.imp.catar);
+    //     this.showStrImpCatar = `U$D 300`;
+    //   }
+
+    //   this.conversionActual.pesos = valor * this.cotizaciones.dolarToPesos.valor;
+    //   this.conversionActual.pesosConImp = +(valor * this.cotizaciones.dolarToPesos.valor * imp).toFixed(2);
+    // }
+
+    const existe = this.conversiones.findIndex(c => c.moneda == this.tipoConversion && c.valor == valor);
     
     if(existe != -1){
       this.conversiones.splice(existe,1);
@@ -316,7 +467,7 @@ export class HomeComponent implements OnInit {
   }
 
   limpiarHistorial(){
-
+    console.log(this.conversiones);
     const source = timer(100,50)
     const limpiar = source.subscribe(val => {
       this.conversiones.pop();

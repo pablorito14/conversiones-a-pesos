@@ -5,14 +5,28 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class MonedaPipePipe implements PipeTransform {
 
-  transform(moneda:string): string {
+  transform(moneda:string,index:number): string {
+    // console.log(moneda)
+    if(moneda == 'euroToPesos'){
 
-    if(moneda == 'euros'){
-      return '€';
-    } else if(moneda == 'francos'){
-      return 'Fr.';
-    } else if(moneda == 'dolares'){
-      return 'U$D';
+      const resp = ['€','$'];
+      // console.log(resp[index]);
+      return resp[index];
+    } else if(moneda == 'francoToPesos'){
+      const resp =  ['Fr.','$'];
+      return resp[index];
+    } else if(moneda == 'dolarToPesos'){
+      const resp = ['U$D','$'];
+      return resp[index];
+    } else if(moneda == 'euroToDolares'){
+      const resp = ['€','U$D'];
+      return resp[index];
+    } else if(moneda == 'francoToEuros'){
+      const resp = ['Fr.','€'];
+      return resp[index];
+    } else if(moneda == 'francoToDolares'){
+      const resp = ['Fr.','U$D'];
+      return resp[index];
     }
 
     return '';

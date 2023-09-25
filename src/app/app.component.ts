@@ -3,6 +3,7 @@ import { CotizacionesService } from './public/services/cotizaciones.service';
 
 import { SwUpdate } from '@angular/service-worker';
 import Swal from 'sweetalert2';
+import { Configuracion } from './public/interfaces/configuracion.interface';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,17 @@ export class AppComponent implements OnInit {
   title = 'euro-pesos-app';
   
   constructor(private update:SwUpdate){
+
+
+    const configLS = localStorage.getItem('config');
+    if(!configLS){
+      const config:Configuracion = {
+        calcularAlCambiar: true,
+        tiempo: 2
+      }
+      const strConfig = JSON.stringify(config)
+      localStorage.setItem('config',strConfig);
+    }
 
     const notificacion = Swal.mixin({
       toast: true,

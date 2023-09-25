@@ -1,0 +1,5 @@
+.form-switch.form-switch-md .form-check-input {
+  height: 1.25rem;
+  width: calc(2rem + 0.5rem);
+  border-radius: 2.5rem;
+}

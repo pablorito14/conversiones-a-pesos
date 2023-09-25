@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1695136811477,
+  "timestamp": 1695679961657,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -14,6 +14,8 @@
         "/assets/font-awesome-v6.2.0/css/all.min.css",
         "/assets/font-awesome-v6.2.0/webfonts/pro-fa-duotone-900-3523ab.ttf",
         "/assets/font-awesome-v6.2.0/webfonts/pro-fa-duotone-900-3523ab.woff2",
+        "/assets/font-awesome-v6.2.0/webfonts/pro-fa-duotone-900-d85a6c.ttf",
+        "/assets/font-awesome-v6.2.0/webfonts/pro-fa-duotone-900-d85a6c.woff2",
         "/assets/font-awesome-v6.2.0/webfonts/pro-fa-duotone-900-e41116.ttf",
         "/assets/font-awesome-v6.2.0/webfonts/pro-fa-duotone-900-e41116.woff2",
         "/assets/font-awesome-v6.2.0/webfonts/pro-fa-duotone-900-e9d1d9.ttf",
@@ -25,12 +27,12 @@
         "/background.acc2358da4ab2260.webp",
         "/favicon.ico",
         "/index.html",
-        "/main.4233a52f52453d54.js",
+        "/main.ec1ec6fd4834779b.js",
         "/manifest.webmanifest",
         "/polyfills.e0bb9c46f55ced86.js",
         "/runtime.ab79a1e845fd8216.js",
         "/scripts.c835cf0c315fc5c5.js",
-        "/styles.8050ed99caa97375.css"
+        "/styles.7110b92289d8f1ec.css"
       ],
       "patterns": []
     },
@@ -83,6 +85,8 @@
     "/assets/font-awesome-v6.2.0/css/all.min.css": "cde802df65910cb5fcfd882d90a59a70394f4c06",
     "/assets/font-awesome-v6.2.0/webfonts/pro-fa-duotone-900-3523ab.ttf": "83fb2ee8aefc1f18aa823bf0e18cb6886a16caeb",
     "/assets/font-awesome-v6.2.0/webfonts/pro-fa-duotone-900-3523ab.woff2": "50ea1b226754d9ddbe0fa95d39b3bb3d27cea02f",
+    "/assets/font-awesome-v6.2.0/webfonts/pro-fa-duotone-900-d85a6c.ttf": "bb4025ca8674aeb927f87ea3b36427e91556813d",
+    "/assets/font-awesome-v6.2.0/webfonts/pro-fa-duotone-900-d85a6c.woff2": "60af23d2d93d22733aaf129996ff5e11a9a67270",
     "/assets/font-awesome-v6.2.0/webfonts/pro-fa-duotone-900-e41116.ttf": "b045fc75381e5f7db15d1b3c3c58730f9d70eb6f",
     "/assets/font-awesome-v6.2.0/webfonts/pro-fa-duotone-900-e41116.woff2": "6b19b0b6904b8b1937d6beadd01e05e01f34d79f",
     "/assets/font-awesome-v6.2.0/webfonts/pro-fa-duotone-900-e9d1d9.ttf": "bd38053627d1fb46d107707bad35e948d63b4da8",
@@ -109,13 +113,13 @@
     "/assets/splashscreens/iphonexsmax_splash.png": "cd03c410e970995f0ebf6e741de046bee51c31c1",
     "/background.acc2358da4ab2260.webp": "0f47fd0c941958fb26f42123730e353c0f2f6f68",
     "/favicon.ico": "bd71fbe2a43df66022942ab3a917b5e98403e01e",
-    "/index.html": "1597a9045c651446b2454d09091dd5825ea641d3",
-    "/main.4233a52f52453d54.js": "f96241c551f20ba82a29adb2dcfb35fed23d12a1",
+    "/index.html": "dabd84e41d6a836f618c21e41b13ef8893abe968",
+    "/main.ec1ec6fd4834779b.js": "3418291cf4b323856314064b1be01dd2928377c5",
     "/manifest.webmanifest": "be7379f13a6410e2473a06beadb7ea36ccb563ba",
     "/polyfills.e0bb9c46f55ced86.js": "a4d4e96dfed468ca5cf36006e1b41c4175fabfd2",
     "/runtime.ab79a1e845fd8216.js": "a46ed270c3dbfc5ee7882fa19af535f12c7373fa",
     "/scripts.c835cf0c315fc5c5.js": "817bc522f82c76de4ce40ee4cf76fc3b61d9f03c",
-    "/styles.8050ed99caa97375.css": "26257e491f79ea60b4bceb561490a02c70408d96"
+    "/styles.7110b92289d8f1ec.css": "181770a6d018193a63a311f6b633a559c743aaed"
   },
   "navigationUrls": [
     {

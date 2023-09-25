@@ -2,12 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, delay, map, of, zip } from 'rxjs';
 import * as moment from 'moment';
-
-interface CotizacionResponse {
-  compra    :string;
-  venta     :string;
-  fecha     :string;
-}
+import { CotizacionResponse } from '../interfaces/cotizacion.interface';
 
 @Injectable({
   providedIn: 'root'

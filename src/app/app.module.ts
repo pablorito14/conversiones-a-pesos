@@ -19,12 +19,14 @@ import { FormsModule } from '@angular/forms';
 
 import localeEs from '@angular/common/locales/es-AR';
 import { HttpClientModule } from '@angular/common/http';
+import { ConfigComponent } from './public/config/config.component';
 registerLocaleData(localeEs)
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    MonedaPipePipe
+    MonedaPipePipe,
+    ConfigComponent
   ],
   imports: [
     CommonModule,

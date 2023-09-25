@@ -1,0 +1,44 @@
+<div class="cargando" *ngIf="loading; else noLoading">
+  <div>
+    <h3>
+      Cargando
+      <i class="fa-solid fa-period fa-bounce dot"></i> 
+      <i class="fa-solid fa-period fa-bounce dot"></i> 
+      <i class="fa-solid fa-period fa-bounce dot"></i>
+    </h3>
+  </div>
+</div>
+
+<ng-template #noLoading>
+
+  <div class="container">
+
+    <div class="card custom-shadow">
+      <div class="card-body">
+        <h1>Configuración</h1>
+        <div class="row align-items-center mt-3">
+          <div class="col-9">
+            ¿Agregar conversion cuando se cambia de moneda?
+          </div>
+          <div class="col-3 d-flex justify-content-end">
+            <div class="form-check form-switch form-switch-md">
+              <input class="form-check-input" type="checkbox" role="switch" 
+                    [(ngModel)]="config.calcularAlCambiar" [checked]="config.calcularAlCambiar">
+            </div>
+          </div>
+        </div>
+        <div class="mt-3">
+          <label for="customRange3" class="form-label">Tiempo de espera para de calcular <br>conversion: {{ config.tiempo }} segundos</label>
+          <input type="range" class="form-range" min="1" max="5" step="1" [(ngModel)]="config.tiempo" id="customRange3">
+        </div>
+      
+        <div class="d-flex justify-content-between mt-3">
+          <button type="button" class="btn btn-secondary" routerLink="/">Cancelar</button>
+          <button type="button" class="btn btn-primary" (click)="guardarConfiguracion()">Guardar cambios</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</ng-template>
+

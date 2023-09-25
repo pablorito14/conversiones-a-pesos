@@ -1,4 +1,4 @@
-<div class="home">
+<!-- <div class="home"> -->
   <div class="cargando" *ngIf="loading; else noLoading">
     <div>
       <h3>
@@ -12,44 +12,37 @@
 
   <ng-template #noLoading>
 
-    <nav class="navbar fixed-top bg-secondary shadow">
+    <!-- <nav class="navbar fixed-top bg-secondary custom-shadow"> -->
       
-      <div class="container-fluid">
+      <!-- <div class="container-fluid">
         <a href="#" class="navbar-brand text-light border-" [class]="{'active-currency': activeCurrency == 'dolares' }" (click)="cambiarConversion('dolares')">U$D {{ cotizaciones.dolar.valorConImp }}</a>
         <a href="#" class="navbar-brand text-light border-" [class]="{'active-currency': activeCurrency == 'euros' }" (click)="cambiarConversion('euros')">€ {{ cotizaciones.euro.valorConImp }}</a>
         <a href="#" class="navbar-brand text-light border-bottom-" [class]="{'active-currency': activeCurrency == 'francos' }" (click)="cambiarConversion('francos')">Fr. {{ cotizaciones.franco.valorConImp }}</a>
         <a href="#" class="navbar-brand text-light border-bottom-" (click)="buscarCotizacion(true);limpiarInput()"><i [class]="{'fa-spin': reloading}" class="fa-duotone fa-rotate-right"></i></a>
-      </div>
-    </nav>
-
-    <!-- <div class="container px-0 v">
-      <div class="btn-group shadow w-100">
-        <div class="btn btn-secondary border-end" role="button" [class]="{'active-currency': activeCurrency == 'dolares' }" (click)="cambiarConversion('dolares')">U$D {{ cotizaciones.dolar.valorConImp }}</div>
-        <div class="btn btn-secondary border-start border-end" role="button" [class]="{'active-currency': activeCurrency == 'euros' }" (click)="cambiarConversion('euros')">€ {{ cotizaciones.euro.valorConImp }}</div>
-        <div class="btn btn-secondary border-start border-end" role="button" [class]="{'active-currency': activeCurrency == 'francos' }" (click)="cambiarConversion('francos')">Fr. {{ cotizaciones.franco.valorConImp }}</div>
-        <div class="btn btn-secondary border-start" role="button" (click)="buscarCotizacion(true);limpiarInput()"><i [class]="{'fa-spin': reloading}" class="fa-duotone fa-rotate-right"></i></div>
-      </div>
-    </div> -->
-    
-    <div class="container">
-      <!-- <div class="my-3-">
-        <div class="btn-group shadow w-100">
-          
-          <span class="btn btn-secondary border-end" [class]="{'active': activeCurrency == 'dolares' }" (click)="cambiarConversion('dolares')">U$D {{ cotizaciones.dolar.valorConImp }}</span>
-          <span class="btn btn-secondary border-start border-end" [class]="{'active': activeCurrency == 'euros' }" (click)="cambiarConversion('euros')">€ {{ cotizaciones.euro.valorConImp }}</span>
-          <span class="btn btn-secondary border-start border-end" [class]="{'active': activeCurrency == 'francos' }" (click)="cambiarConversion('francos')">Fr. {{ cotizaciones.franco.valorConImp }}</span>
-          <span class="btn btn-secondary border-start" (click)="buscarCotizacion(true);limpiarInput()"><i [class]="{'fa-spin': reloading}" class="fa-duotone fa-rotate-right"></i></span>
-        </div>
+        
       </div> -->
-      
+    <!-- </nav> -->
+
+    <div class="container">
   
-      <div class="card my-3 shadow">
+      <div>
+        <select class="form-select custom-shadow" [(ngModel)]="tipoConversion" (ngModelChange)="cambiarConversion()">
+          <option value="dolarToPesos">Dólares a pesos</option>
+          <option value="euroToPesos">Euros a pesos</option>
+          <option value="francoToPesos">Francos a pesos</option>
+          <option value="euroToDolares">Euros a dólares</option>
+          <option value="francoToEuros">Francos a euros</option>
+          <option value="francoToDolares">Francos a dólares</option>
+        </select>
+      </div>
+
+      <div class="card my-3 custom-shadow">
         <div class="card-body">
-          <h3 class="text-center">Conversion de {{ activeCurrency }} a pesos</h3>
+          <h3 class="text-center">Conversion de {{ activeCurrency }}</h3>
           
           <div class="input-group conversion-input">
             <input #conversion type="text" class="form-control" aria-describedby="conversion" 
-                  autofocus="true" 
+                   
                   
                   (keydown)="keyDown($event)"
                   pattern="\d*" inputmode="decimal"
@@ -64,7 +57,7 @@
           <div class="row">
             <div class="col-5">
               <div class="fw-bold fs-5">
-                <span class="text-muted">{{ conversionActual.moneda | monedaPipe }}</span> 
+                <span class="text-muted">{{ conversionActual.moneda | monedaPipe:0 }}</span> 
                 {{ conversionActual.valor | currency:' ' }}
               </div>
             </div>
@@ -73,8 +66,8 @@
             </div>
             <div class="col-5 text-end">
               <div class="fw-bold fs-5">
-                <span class="text-muted">$ </span> 
-                {{ conversionActual.pesosConImp | currency:' ':'symbol':'3.0-2' }}
+                <span class="text-muted">{{ conversionActual.moneda | monedaPipe:1 }}</span> 
+                {{ conversionActual.pesosConImp | currency:' ':'symbol':'1.2-2' }}
               </div>
             </div>
           </div>
@@ -86,14 +79,14 @@
           </p>
         </div>
       </div>
-      <div class="card my-3 shadow" *ngIf="conversiones.length > 0">
+      <div class="card my-3 custom-shadow" *ngIf="conversiones.length > 0">
         <div class="card-body">
           <h3 class="text-center">Historial <i class="fa-duotone fa-eraser text-primary" (click)="limpiarHistorial()"></i></h3>
 
           <div class="row" *ngFor="let c of conversiones">
             <div class="col-5">
               <div class="fw-bold fs-5">
-                <span class="text-muted">{{ c.moneda | monedaPipe }}</span> 
+                <span class="text-muted">{{ c.moneda | monedaPipe:0 }}</span> 
                 {{ c.valor | currency:' ' }}
               </div>
             </div>
@@ -102,16 +95,60 @@
             </div>
             <div class="col-5 text-end">
               <div class="fw-bold fs-5">
-                <span class="text-muted">$ </span> 
-                {{ c.pesosConImp | currency:' ':'symbol':'3.0-2' }}
+                <span class="text-muted">{{ c.moneda | monedaPipe:1 }}</span> 
+                {{ c.pesosConImp | currency:' ':'symbol':'1.2-2' }}
               </div>
             </div>
           </div>
 
         </div>
       </div>
+
+      <div class="floating-button d-flex gap-3">
+        
+        <span class="config-button" (click)="buscarCotizacion(true);limpiarInput()">
+          <i [class]="{'fa-spin': reloading}" class="fa-duotone fa-rotate-right text-white fa-xl"></i>
+        </span>
+        <span class="config-button" routerLink="/config">
+          <i class="fa-duotone fa-gears text-white fa-xl"></i>
+        </span>
+      </div>
     </div>
   </ng-template>
-  
+ 
 
-</div>
+<!-- </div> -->
+
+<!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen-lg-down-">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Configuración</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body border">
+        <div class="row align-items-center">
+          <div class="col-10">
+            <p>¿Agregar conversion cuando se cambia de moneda?</p>
+          </div>
+          <div class="col-2 text-end">
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" 
+                    [(ngModel)]="config.calcularAlCambiar" [checked]="config.calcularAlCambiar">
+            </div>
+
+          </div>
+
+        </div>
+        <div>
+          <label for="customRange3" class="form-label">Tiempo de espera: {{ config.tiempo }} segundos</label>
+          <input type="range" class="form-range" min="1" max="5" step="1" [(ngModel)]="config.tiempo" id="customRange3">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="guardarConfiguracion()">Guardar cambios</button>
+      </div>
+    </div>
+  </div>
+</div> -->
