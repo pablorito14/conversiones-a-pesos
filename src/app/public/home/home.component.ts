@@ -72,6 +72,10 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.config = JSON.parse(localStorage.getItem('config')!);
+
+    if(localStorage.getItem('tipoCambio')){
+      localStorage.removeItem('tipoCambio');
+    }
     this.debouncer
         .pipe(debounceTime(this.config.tiempo*1000))
         .subscribe(valor => {
@@ -105,7 +109,7 @@ export class HomeComponent implements OnInit {
     };
     // console.log(cambio,this.tipoConversion)
     // this.activeCurrency = cambio;
-    localStorage.setItem('tipoCambio',cambio);
+    localStorage.setItem('tipo_cambio',cambio);
 
     if(cambio == 'euroToPesos') {
       this.ultimaCotizacion = moment(this.cotizaciones.euroToPesos.fecha).format(this.formatoFecha);
@@ -303,7 +307,7 @@ export class HomeComponent implements OnInit {
 
       localStorage.setItem('cotizaciones',JSON.stringify(this.cotizaciones))
 
-      const cambio = localStorage.getItem('tipoCambio') || 'euroToPesos';
+      const cambio = localStorage.getItem('tipo_cambio') || 'euroToPesos';
       this.tipoConversion = cambio;
       this.cambiarConversion(cambio,false);
       this.loading = false;
