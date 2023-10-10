@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
   imp:Impuestos = {
     rg4815: 0.45,
     pais: 0.30,
-    catar: 0.05
+    catar: 0.25
   }
 
   loading:boolean = true;
@@ -247,10 +247,10 @@ export class HomeComponent implements OnInit {
 
     this._cotizaciones.getCotizacion().subscribe((cot:any) => {
       
-      const valorDolar = +(cot.dolar.valor * (this.imp.rg4815 + this.imp.pais + 1)).toFixed(2);
-      const valorEuro = +(cot.euro.valor * (this.imp.rg4815 + this.imp.pais + 1)).toFixed(2);
+      const valorDolar = +(cot.dolar.valor * (this.imp.rg4815 + this.imp.pais + this.imp.catar + 1)).toFixed(2);
+      const valorEuro = +(cot.euro.valor * (this.imp.rg4815 + this.imp.pais + this.imp.catar + 1)).toFixed(2);
       const valorFranco = +(cot.euro.valor * this.francosToEuros).toFixed(2)
-      const valorFrancoConImp = +(valorFranco * (this.imp.rg4815 + this.imp.pais + 1)).toFixed(2);
+      const valorFrancoConImp = +(valorFranco * (this.imp.rg4815 + this.imp.pais + this.imp.catar + 1)).toFixed(2);
 
 
 
@@ -376,38 +376,44 @@ export class HomeComponent implements OnInit {
     let imp = 1;
     if(this.tipoConversion === 'euroToPesos'){
 
-      if(valor < this.limiteImpCatar.euros ){
-        imp += (this.imp.rg4815 + this.imp.pais);
-        this.showStrImpCatar = '';
-      } else {
-        imp += (this.imp.rg4815 + this.imp.pais + this.imp.catar);
-        this.showStrImpCatar = `U$D 300 (≈ € ${this.limiteImpCatar.euros})`
-      }
-
+      // if(valor < this.limiteImpCatar.euros ){
+      //   imp += (this.imp.rg4815 + this.imp.pais);
+      //   this.showStrImpCatar = '';
+      // } else {
+      //   imp += (this.imp.rg4815 + this.imp.pais + this.imp.catar);
+      //   this.showStrImpCatar = `U$D 300 (≈ € ${this.limiteImpCatar.euros})`
+      // }
+      
+      imp += (this.imp.rg4815 + this.imp.pais + this.imp.catar);
+      
       this.conversionActual.pesos = valor * this.cotizaciones.euroToPesos.valor;
       this.conversionActual.pesosConImp = +(valor * this.cotizaciones.euroToPesos.valor * imp).toFixed(2);
     } else if(this.tipoConversion === 'francoToPesos' ){
 
-      if(valor < this.limiteImpCatar.francos ){
-        this.showStrImpCatar = '';
-        imp += (this.imp.rg4815 + this.imp.pais);
-      } else {
-        imp += (this.imp.rg4815 + this.imp.pais + this.imp.catar);
-        this.showStrImpCatar = `U$D 300 (≈ Fr. ${this.limiteImpCatar.francos})`;
-      }
+      // if(valor < this.limiteImpCatar.francos ){
+      //   this.showStrImpCatar = '';
+      //   imp += (this.imp.rg4815 + this.imp.pais);
+      // } else {
+      //   imp += (this.imp.rg4815 + this.imp.pais + this.imp.catar);
+      //   this.showStrImpCatar = `U$D 300 (≈ Fr. ${this.limiteImpCatar.francos})`;
+      // }
+
+      imp += (this.imp.rg4815 + this.imp.pais + this.imp.catar);
 
       this.conversionActual.pesos = valor * this.cotizaciones.francoToPesos.valor;
       this.conversionActual.pesosConImp = +(valor * this.cotizaciones.francoToPesos.valor * imp).toFixed(2);
     } else if(this.tipoConversion === 'dolarToPesos'){
 
-      if(valor < this.limiteImpCatar.dolares ){
-        imp += (this.imp.rg4815 + this.imp.pais);
-        this.showStrImpCatar = '';
-      } else {
-        imp += (this.imp.rg4815 + this.imp.pais + this.imp.catar);
-        this.showStrImpCatar = `U$D 300`;
-      }
+      // if(valor < this.limiteImpCatar.dolares ){
+      //   imp += (this.imp.rg4815 + this.imp.pais);
+      //   this.showStrImpCatar = '';
+      // } else {
+      //   imp += (this.imp.rg4815 + this.imp.pais + this.imp.catar);
+      //   this.showStrImpCatar = `U$D 300`;
+      // }
 
+      imp += (this.imp.rg4815 + this.imp.pais + this.imp.catar);
+      
       this.conversionActual.pesos = valor * this.cotizaciones.dolarToPesos.valor;
       this.conversionActual.pesosConImp = +(valor * this.cotizaciones.dolarToPesos.valor * imp).toFixed(2);
     } else if(this.tipoConversion == 'francoToDolares') {
